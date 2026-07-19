@@ -239,7 +239,7 @@ void main() {
                     </div>
                     <div className="mt-10 sm:mt-12 text-center">
                         <p className="font-label-caps text-[12px] text-secondary mb-2 uppercase tracking-widest">With Love,</p>
-                        <div className="font-headline-md text-[22px] sm:text-[24px] text-primary-fixed">The Island Spirit</div>
+                        <div className="font-headline-md text-[22px] sm:text-[24px] text-primary-fixed">Your LOVELY IDIOT</div>
                     </div>
                 </div>
             </div>

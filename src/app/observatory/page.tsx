@@ -1,52 +1,77 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { ContinueButton, BackToIsland } from "@/components/RealmNav";
 import { useProgress } from "@/components/ProgressProvider";
 import { useRealmGate } from "@/hooks/useRealmGate";
 
+/** Star positions as % of the sky PNG (2880×1588), matched to Sagittarius / Scorpius / Libra. */
 const CONSTELLATIONS = [
   {
     name: "Sagittarius",
     message: "You make people smile just by being you.",
-    /** Approximate region on the wide sky map (percent of map width/height) */
-    style: {
-      left: "8%",
-      top: "18%",
-      width: "28%",
-      height: "42%",
-    },
+    stars: [
+      { x: 16.5, y: 42.7 },
+      { x: 18.9, y: 43.1 },
+      { x: 21.8, y: 33.6 },
+      { x: 22.1, y: 43.3 },
+      { x: 23.6, y: 58.9 },
+      { x: 24.5, y: 38.0 },
+      { x: 26.0, y: 35.3 },
+      { x: 26.9, y: 53.1 },
+      { x: 27.4, y: 29.7 },
+      { x: 29.9, y: 48.4 },
+      { x: 30.0, y: 38.2 },
+      { x: 31.3, y: 43.1 },
+      { x: 32.0, y: 54.8 },
+      { x: 35.3, y: 44.3 },
+      { x: 35.4, y: 32.7 },
+    ],
   },
   {
     name: "Scorpius",
     message: "You make ordinary days memorable.",
-    style: {
-      left: "38%",
-      top: "28%",
-      width: "32%",
-      height: "52%",
-    },
+    stars: [
+      { x: 40.8, y: 71.7 },
+      { x: 44.4, y: 83.1 },
+      { x: 46.6, y: 74.1 },
+      { x: 50.6, y: 65.8 },
+      { x: 52.7, y: 75.9 },
+      { x: 57.6, y: 42.4 },
+      { x: 60.9, y: 58.0 },
+      { x: 64.2, y: 55.2, accent: true }, // Antares
+      { x: 65.6, y: 62.3 },
+      { x: 66.3, y: 49.2 },
+      { x: 67.3, y: 63.2 },
+      { x: 68.6, y: 42.1 },
+      { x: 69.7, y: 59.6 },
+      { x: 70.9, y: 53.7 },
+    ],
   },
   {
     name: "Libra",
     message: "You are stronger than you realize.",
-    style: {
-      left: "72%",
-      top: "22%",
-      width: "24%",
-      height: "40%",
-    },
+    stars: [
+      { x: 79.3, y: 35.1 },
+      { x: 80.9, y: 51.4 },
+      { x: 82.8, y: 42.1 },
+      { x: 86.2, y: 47.7 },
+      { x: 89.3, y: 60.1 },
+      { x: 92.2, y: 35.2 },
+    ],
   },
 ] as const;
+
+const SKY_ASPECT = 2880 / 1588;
 
 export default function Observatory() {
   useRealmGate("observatory");
   const { discoverConstellation, progress } = useProgress();
-  const skyScrollRef = useRef<HTMLDivElement>(null);
 
   const [panelVisible, setPanelVisible] = useState(false);
   const [constellationName, setConstellationName] = useState("");
   const [constellationMessage, setConstellationMessage] = useState("");
+  const [pulseKey, setPulseKey] = useState<string | null>(null);
 
   const createStarDust = useCallback((x: number, y: number) => {
     for (let i = 0; i < 10; i++) {
@@ -61,12 +86,20 @@ export default function Observatory() {
   }, []);
 
   const discover = useCallback(
-    (name: string, message: string, clientX: number, clientY: number) => {
+    (
+      name: string,
+      message: string,
+      starKey: string,
+      clientX: number,
+      clientY: number
+    ) => {
       setConstellationName(name);
       setConstellationMessage(message);
       setPanelVisible(true);
+      setPulseKey(starKey);
       discoverConstellation(name);
       createStarDust(clientX, clientY);
+      setTimeout(() => setPulseKey(null), 600);
     },
     [createStarDust, discoverConstellation]
   );
@@ -75,39 +108,52 @@ export default function Observatory() {
     <div className="text-on-background fixed inset-0 dark overflow-hidden selection:bg-secondary-container selection:text-on-secondary-container bg-[#050814]">
       {/* Wide sky map — pans horizontally on portrait so Libra stays reachable */}
       <div
-        ref={skyScrollRef}
         className="fixed inset-0 z-0 overflow-x-auto overflow-y-hidden overscroll-x-contain touch-pan-x"
         style={{ WebkitOverflowScrolling: "touch" }}
       >
         <div
           className="relative h-[100dvh] min-w-full"
-          style={{ width: "max(100vw, calc(100dvh * 1.85))" }}
+          style={{ width: `max(100vw, calc(100dvh * ${SKY_ASPECT}))` }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/observatory-sky.png"
             alt=""
-            className="absolute inset-0 h-full w-full object-cover object-center select-none pointer-events-none"
+            className="absolute inset-0 h-full w-full object-fill select-none pointer-events-none"
             draggable={false}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/45 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40 pointer-events-none" />
 
-          {CONSTELLATIONS.map((c) => (
-            <button
-              key={c.name}
-              type="button"
-              aria-label={`Discover ${c.name}`}
-              className="absolute z-10 rounded-full border border-transparent bg-transparent cursor-crosshair touch-manipulation focus-visible:outline focus-visible:outline-2 focus-visible:outline-tertiary/70 focus-visible:outline-offset-2 hover:bg-white/[0.03] active:bg-tertiary/10 transition-colors"
-              style={c.style}
-              onClick={(e) =>
-                discover(c.name, c.message, e.clientX, e.clientY)
-              }
-            />
-          ))}
+          {CONSTELLATIONS.map((c) =>
+            c.stars.map((star, i) => {
+              const key = `${c.name}-${i}`;
+              const accent = "accent" in star && star.accent;
+              const found = progress.observatoryFound.includes(c.name);
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  aria-label={`${c.name} star`}
+                  className={`obs-star absolute z-10 -translate-x-1/2 -translate-y-1/2 rounded-full touch-manipulation cursor-pointer border-0 p-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-tertiary focus-visible:outline-offset-2 ${
+                    pulseKey === key ? "obs-star-pulse" : ""
+                  } ${found ? "obs-star-found" : ""} ${accent ? "obs-star-accent" : ""}`}
+                  style={{
+                    left: `${star.x}%`,
+                    top: `${star.y}%`,
+                    width: accent ? 22 : 16,
+                    height: accent ? 22 : 16,
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    discover(c.name, c.message, key, e.clientX, e.clientY);
+                  }}
+                />
+              );
+            })
+          )}
         </div>
       </div>
 
-      {/* Top Navigation */}
       <div className="fixed top-0 left-0 w-full z-40 flex items-start justify-between gap-2 pt-[max(1rem,var(--safe-top))] px-[max(0.75rem,var(--safe-left))] pr-[max(0.75rem,var(--safe-right))] pointer-events-none">
         <div className="pointer-events-auto">
           <BackToIsland className="glow-button flex items-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-full border border-white/20 bg-surface/10 backdrop-blur-md text-primary font-label-caps uppercase" />
@@ -125,7 +171,7 @@ export default function Observatory() {
           Kim&apos;s Observatory
         </h1>
         <p className="font-body-md text-[13px] sm:text-[16px] text-secondary/90 font-light tracking-wider px-2 drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]">
-          Discover Sagittarius, Scorpius, and Libra. ({progress.observatoryFound.length}/3)
+          Tap the stars of Sagittarius, Scorpius, and Libra. ({progress.observatoryFound.length}/3)
         </p>
         <p className="mt-1 font-label-caps text-[10px] sm:text-[11px] uppercase tracking-widest text-on-surface-variant/70 sm:hidden">
           Swipe to explore the sky
@@ -175,6 +221,42 @@ export default function Observatory() {
         .glow-button:hover {
           box-shadow: inset 0 0 20px rgba(210, 187, 255, 0.5);
           border-color: rgba(210, 187, 255, 0.8);
+        }
+        .obs-star {
+          background: radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.95) 0%,
+            rgba(255, 255, 255, 0.35) 45%,
+            transparent 70%
+          );
+          box-shadow: 0 0 10px rgba(255, 255, 255, 0.55);
+          opacity: 0.55;
+          transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .obs-star:hover,
+        .obs-star:focus-visible {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1.35);
+          box-shadow: 0 0 16px rgba(233, 195, 73, 0.85);
+        }
+        .obs-star-accent {
+          background: radial-gradient(
+            circle,
+            rgba(255, 180, 80, 1) 0%,
+            rgba(255, 140, 40, 0.45) 50%,
+            transparent 72%
+          );
+          box-shadow: 0 0 14px rgba(255, 154, 60, 0.75);
+          opacity: 0.75;
+        }
+        .obs-star-found {
+          opacity: 0.9;
+          box-shadow: 0 0 14px rgba(233, 195, 73, 0.7);
+        }
+        .obs-star-pulse {
+          opacity: 1 !important;
+          transform: translate(-50%, -50%) scale(1.8) !important;
+          box-shadow: 0 0 22px rgba(255, 224, 136, 1) !important;
         }
         .star-dust {
           position: absolute;

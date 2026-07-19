@@ -187,7 +187,7 @@ export default function Finale() {
       <div className="absolute inset-0 z-0 pointer-events-none" id="starfield"></div>
 
       <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center gap-3 pt-[max(1rem,var(--safe-top))] px-[max(1rem,var(--safe-left))] pr-[max(1rem,var(--safe-right))] py-4 bg-transparent pointer-events-none">
-        <div className="pointer-events-auto">
+        <div className={`pointer-events-auto transition-opacity duration-500 ${isOpened ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
           <BackToIsland className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-full glass-panel text-on-surface-variant hover:text-tertiary transition-colors" />
         </div>
         <span className="font-display-story text-[clamp(1.25rem,3.5vw,2.5rem)] text-primary tracking-tight truncate pointer-events-none">
@@ -254,7 +254,13 @@ export default function Finale() {
             </p>
             <Link
               href="/?island=true"
-              className="group relative z-50 flex items-center justify-center px-8 py-3 rounded-full bg-surface-container border border-white/10 hover:border-tertiary/50 transition-all duration-500 pointer-events-auto"
+              className={`group relative z-50 flex items-center justify-center px-8 py-3 rounded-full bg-surface-container border border-white/10 hover:border-tertiary/50 transition-all duration-500 ${
+                showMessage
+                  ? "pointer-events-auto opacity-100"
+                  : "pointer-events-none opacity-0"
+              }`}
+              tabIndex={showMessage ? 0 : -1}
+              aria-hidden={!showMessage}
             >
               <span className="font-label-caps text-[12px] text-on-surface tracking-widest uppercase group-hover:text-tertiary transition-colors">
                 Return to Island

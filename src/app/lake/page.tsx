@@ -32,7 +32,6 @@ const LAKE_MEMORIES = [
 export default function StarLake() {
   useRealmGate("lake");
   const { ready, progress, setLakeStars } = useProgress();
-  const shaderCanvasRef = useRef<HTMLCanvasElement>(null);
   const threeContainerRef = useRef<HTMLDivElement>(null);
   
   const [starsCollected, setStarsCollected] = useState(0);
@@ -51,137 +50,6 @@ export default function StarLake() {
       setStarsCollected(progress.lakeStars);
     }
   }, [ready, progress.lakeStars]);
-
-  // Background Shader
-  useEffect(() => {
-    const canvas = shaderCanvasRef.current;
-    if (!canvas) return;
-
-    function syncSize() {
-      const w = canvas?.clientWidth || window.innerWidth;
-      const h = canvas?.clientHeight || window.innerHeight;
-      if (canvas && (canvas.width !== w || canvas.height !== h)) {
-        canvas.width = w;
-        canvas.height = h;
-      }
-    }
-    
-    const resizeObserver = new ResizeObserver(syncSize);
-    resizeObserver.observe(canvas);
-    syncSize();
-
-    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-    if (!gl) return;
-
-    const vs = `attribute vec2 a_position;
-varying vec2 v_texCoord;
-void main() {
-  v_texCoord = a_position * 0.5 + 0.5;
-  gl_Position = vec4(a_position, 0.0, 1.0);
-}`;
-    const fs = `precision highp float;
-varying vec2 v_texCoord;
-uniform float u_time;
-uniform vec2 u_resolution;
-
-float hash(vec2 p) {
-    p = fract(p * vec2(123.34, 456.21));
-    p += dot(p, p + 45.32);
-    return fract(p.x * p.y);
-}
-
-float noise(vec2 p) {
-    vec2 i = floor(p);
-    vec2 f = fract(p);
-    f = f * f * (3.0 - 2.0 * f);
-    return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x),
-               mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
-}
-
-void main() {
-    vec2 uv = v_texCoord;
-    vec2 p = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.y, u_resolution.x);
-    
-    // Deep water colors
-    vec3 color1 = vec3(0.02, 0.05, 0.12); // Midnight blue
-    vec3 color2 = vec3(0.05, 0.1, 0.2);  // Soft cyan reflection
-    
-    float n = noise(p * 2.0 + u_time * 0.1);
-    float ripples = sin(p.x * 10.0 + n * 5.0 + u_time) * 0.5 + 0.5;
-    ripples *= sin(p.y * 8.0 - u_time * 0.5) * 0.5 + 0.5;
-    
-    vec3 finalColor = mix(color1, color2, ripples * 0.3);
-    
-    // Twinkling reflections
-    float stars = pow(hash(p + u_time * 0.001), 100.0) * 0.8;
-    finalColor += stars * vec3(0.8, 0.9, 1.0);
-    
-    // Vignette
-    float d = length(uv - 0.5);
-    finalColor *= smoothstep(0.8, 0.2, d);
-
-    gl_FragColor = vec4(finalColor, 1.0);
-}`;
-
-    function cs(type: any, src: any) {
-      // @ts-ignore
-      const s = gl.createShader(type);
-      // @ts-ignore
-      gl.shaderSource(s, src);
-      // @ts-ignore
-      gl.compileShader(s);
-      return s;
-    }
-
-    // @ts-ignore
-    const prog = gl.createProgram();
-    // @ts-ignore
-    gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
-    // @ts-ignore
-    gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
-    // @ts-ignore
-    gl.linkProgram(prog);
-    // @ts-ignore
-    gl.useProgram(prog);
-    // @ts-ignore
-    const buf = gl.createBuffer();
-    // @ts-ignore
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    // @ts-ignore
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
-    
-    // @ts-ignore
-    const pos = gl.getAttribLocation(prog, 'a_position');
-    // @ts-ignore
-    gl.enableVertexAttribArray(pos);
-    // @ts-ignore
-    gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
-    
-    // @ts-ignore
-    const uTime = gl.getUniformLocation(prog, 'u_time');
-    // @ts-ignore
-    const uRes = gl.getUniformLocation(prog, 'u_resolution');
-
-    let animationFrameId: number;
-
-    function render(t: number) {
-      // @ts-ignore
-      gl.viewport(0, 0, canvas.width, canvas.height);
-      // @ts-ignore
-      if (uTime) gl.uniform1f(uTime, t * 0.001);
-      // @ts-ignore
-      if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
-      // @ts-ignore
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-      animationFrameId = requestAnimationFrame(render);
-    }
-    render(0);
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      resizeObserver.disconnect();
-    };
-  }, []);
 
   // Three.js Boat Scene
   useEffect(() => {
@@ -395,12 +263,16 @@ void main() {
 
   return (
     <div className="bg-background text-on-background overflow-hidden fixed inset-0 m-0 p-0 selection:bg-tertiary-fixed-dim/30 dark">
-      {/* Background Shader Layer */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 w-full h-full">
-            <canvas ref={shaderCanvasRef} className="w-full h-full" />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-surface-dim via-transparent to-surface-dim/50 pointer-events-none"></div>
+      {/* Starfield background */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/lake-sky.png"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover object-center select-none"
+          draggable={false}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-black/20" />
       </div>
 
       {/* Foreground 3D Scene Layer (Boats) */}
@@ -420,7 +292,7 @@ void main() {
         </header>
         
         <main className="flex-grow flex flex-col items-center justify-start sm:justify-center text-center px-gutter pt-2 sm:pt-0 pointer-events-none">
-          <div className="glass-panel p-4 sm:p-8 md:p-12 rounded-2xl sm:rounded-[32px] max-w-2xl floating-element">
+          <div className="lake-title-panel p-4 sm:p-8 md:p-12 rounded-2xl sm:rounded-[32px] max-w-2xl floating-element border border-white/10">
             <h1 className="font-display-story text-[clamp(1.5rem,5vw,48px)] text-on-surface mb-2 sm:mb-4 tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
                 Star-filled Reflections
             </h1>
@@ -494,6 +366,11 @@ void main() {
         @keyframes gentle-float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
+        }
+        .lake-title-panel {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
       `}</style>
     </div>
