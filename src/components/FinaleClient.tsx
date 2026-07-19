@@ -56,18 +56,18 @@ export default function FinaleClient() {
   useEffect(() => {
     const container = threeContainerRef.current;
     if (!container || !(window as any).THREE) return;
-    
+
     const THREE = (window as any).THREE;
     const scene = new THREE.Scene();
     const width = container.clientWidth || window.innerWidth;
     const height = container.clientHeight || window.innerHeight;
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
     camera.position.set(0, 2, 8);
-    
+
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(getPixelRatioCap(lite));
-    
+
     while (container.firstChild) {
       container.removeChild(container.firstChild);
     }
@@ -80,7 +80,7 @@ export default function FinaleClient() {
     scene.add(spotLight);
 
     const giftGroup = new THREE.Group();
-    
+
     const boxGeo = new THREE.BoxGeometry(3, 3, 3);
     const boxMat = new THREE.MeshStandardMaterial({ color: 0x4b0082 }); // Indigo
     const box = new THREE.Mesh(boxGeo, boxMat);
@@ -100,13 +100,13 @@ export default function FinaleClient() {
     const positions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
 
-    for(let i=0; i<particleCount*3; i++) {
+    for (let i = 0; i < particleCount * 3; i++) {
       positions[i] = (Math.random() - 0.5) * 15;
       colors[i] = Math.random();
     }
     particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    
+
     const pMaterial = new THREE.PointsMaterial({ size: 0.1, vertexColors: true, transparent: true, opacity: 0.8 });
     const points = new THREE.Points(particles, pMaterial);
     scene.add(points);
@@ -142,32 +142,32 @@ export default function FinaleClient() {
   }, [lite]);
 
   const createFireworks = (x: number, y: number) => {
-      const colors = ['#e9c349', '#ffe088', '#ffffff']; 
-      for (let i = 0; i < 50; i++) {
-          const particle = document.createElement('div');
-          particle.classList.add('firework');
-          document.body.appendChild(particle);
+    const colors = ['#e9c349', '#ffe088', '#ffffff'];
+    for (let i = 0; i < 50; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('firework');
+      document.body.appendChild(particle);
 
-          const angle = Math.random() * Math.PI * 2;
-          const velocity = 100 + Math.random() * 200;
-          const tx = Math.cos(angle) * velocity;
-          const ty = Math.sin(angle) * velocity;
-          
-          particle.style.left = `${x}px`;
-          particle.style.top = `${y}px`;
-          particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      const angle = Math.random() * Math.PI * 2;
+      const velocity = 100 + Math.random() * 200;
+      const tx = Math.cos(angle) * velocity;
+      const ty = Math.sin(angle) * velocity;
 
-          particle.animate([
-              { transform: `translate(0, 0) scale(1)`, opacity: 1 },
-              { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
-          ], {
-              duration: 1000 + Math.random() * 1000,
-              easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-              fill: 'forwards'
-          });
+      particle.style.left = `${x}px`;
+      particle.style.top = `${y}px`;
+      particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
 
-          setTimeout(() => particle.remove(), 2000);
-      }
+      particle.animate([
+        { transform: `translate(0, 0) scale(1)`, opacity: 1 },
+        { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+      ], {
+        duration: 1000 + Math.random() * 1000,
+        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        fill: 'forwards'
+      });
+
+      setTimeout(() => particle.remove(), 2000);
+    }
   };
 
   const handleOpenPresent = (e: React.MouseEvent | React.PointerEvent) => {
@@ -190,7 +190,7 @@ export default function FinaleClient() {
         <div className={`pointer-events-auto transition-opacity duration-500 ${isOpened ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
           <BackToIsland className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-full glass-panel text-on-surface-variant hover:text-tertiary transition-colors" />
         </div>
-        <span className="font-display-story text-[clamp(1.25rem,3.5vw,2.5rem)] text-primary tracking-tight truncate pointer-events-none">
+        <span className="absolute left-1/2 -translate-x-1/2 font-display-story text-[clamp(1.25rem,3.5vw,2.5rem)] text-primary tracking-tight truncate pointer-events-none">
           Astra for Kim
         </span>
         <span
@@ -203,9 +203,8 @@ export default function FinaleClient() {
 
       <main className="flex-1 relative z-10 flex flex-col items-center justify-center px-4 sm:px-margin-desktop pt-[max(5rem,calc(var(--safe-top)+4rem))] pb-[max(1.5rem,var(--safe-bottom))] h-full overflow-hidden">
         <div
-          className={`relative w-full max-w-4xl aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] max-h-[min(58dvh,520px)] rounded-2xl sm:rounded-3xl overflow-hidden glass-panel flex items-center justify-center present-container z-20 shadow-[0_0_50px_rgba(233,195,73,0.1)] ${
-            isOpened ? "pointer-events-none" : "cursor-pointer"
-          }`}
+          className={`relative w-full max-w-4xl aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] max-h-[min(58dvh,520px)] rounded-2xl sm:rounded-3xl overflow-hidden glass-panel flex items-center justify-center present-container z-20 shadow-[0_0_50px_rgba(233,195,73,0.1)] ${isOpened ? "pointer-events-none" : "cursor-pointer"
+            }`}
           onPointerDown={handleOpenPresent}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
@@ -221,9 +220,8 @@ export default function FinaleClient() {
           </div>
 
           <div
-            className={`absolute inset-0 z-20 flex flex-col items-center justify-center bg-surface/40 backdrop-blur-sm transition-opacity duration-1000 px-4 pointer-events-none ${
-              isOpened ? "opacity-0" : "opacity-100"
-            }`}
+            className={`absolute inset-0 z-20 flex flex-col items-center justify-center bg-surface/40 backdrop-blur-sm transition-opacity duration-1000 px-4 pointer-events-none ${isOpened ? "opacity-0" : "opacity-100"
+              }`}
           >
             <span
               className="material-symbols-outlined text-5xl sm:text-6xl text-tertiary mb-4 sm:mb-6 animate-pulse"
@@ -241,28 +239,47 @@ export default function FinaleClient() {
         </div>
 
         <div
-          className={`message-reveal absolute inset-0 z-40 flex flex-col items-center justify-center w-full p-4 sm:p-8 ${
-            showMessage ? "active pointer-events-auto" : "pointer-events-none"
-          }`}
+          className={`message-reveal absolute inset-0 z-40 flex flex-col items-center justify-center w-full p-4 sm:p-8 ${showMessage ? "active pointer-events-auto" : "pointer-events-none"
+            }`}
           role="dialog"
           aria-modal="true"
           aria-hidden={!showMessage}
           aria-labelledby="birthday-heading"
         >
-          <div className="glass-panel p-6 sm:p-10 rounded-2xl sm:rounded-3xl text-center shadow-[0_0_100px_rgba(233,195,73,0.2)] border border-tertiary/20 flex flex-col items-center max-w-3xl max-h-[min(85dvh,720px)] overflow-y-auto">
+          <div className="glass-panel p-6 sm:p-10 rounded-2xl sm:rounded-3xl text-center shadow-[0_0_100px_rgba(233,195,73,0.2)] border border-tertiary/20 flex flex-col items-center max-w-2xl max-h-[min(85dvh,720px)] overflow-y-auto hide-scrollbar">
             <h2 id="birthday-heading" className="font-display-story text-[clamp(1.75rem,5vw,3.5rem)] text-tertiary glow-text mb-4 sm:mb-6">
               Happy Birthday, Kim.
             </h2>
-            <p className="font-body-lg text-[15px] sm:text-[18px] text-on-surface-variant leading-relaxed mb-6 sm:mb-8">
-              This world was built just for you. Every star, every path, every memory crafted with care to celebrate the magic you bring to the universe.
+            <p className="font-body-lg text-[13px] sm:text-[15px] text-on-surface-variant leading-relaxed mb-6 sm:mb-8">
+              There are people who pass through our lives like seasons, and then there are those who quietly become a part of it so naturally that it's hard to imagine life without them. You're one of those people.
+              <br /><br />
+
+              Thank you for being the kind of person who makes ordinary conversations feel meaningful, ordinary days feel lighter, and ordinary moments worth remembering. Your kindness has a way of reaching people even across the country, and that's something truly special.
+              <br /><br />
+
+              I hope this year brings you everything you deserve, new adventures to explore, dreams worth chasing, and countless little moments that make you stop and smile. I hope you continue to find happiness in the simplest things, and that life is as gentle with you as you've been with the people around you.
+              <br /><br />
+
+              No matter where life takes you, I hope you never lose the parts of yourself that make you who you are your warmth, your curiosity, your quiet strength, and the way you make people feel comfortable just by being yourself.
+              <br /><br />
+
+              If this website managed to make you smile, even for a moment, then everything I did was completely worth it.
+              <br /><br />
+
+              Because some people deserve more than just a simple "Happy Birthday." They deserve something created with time, patience, and care.
+              <br /><br />
+
+              Happy Birthday, Kim.
+              <br /><br />
+
+              May this year bring you more joy than you expect, more memories than you can count, and more reasons to smile than ever before.
             </p>
             <Link
               href="/?island=true"
-              className={`group relative z-50 flex items-center justify-center px-8 py-3 rounded-full bg-surface-container border border-white/10 hover:border-tertiary/50 transition-all duration-500 ${
-                showMessage
-                  ? "pointer-events-auto opacity-100"
-                  : "pointer-events-none opacity-0"
-              }`}
+              className={`group relative z-50 flex items-center justify-center px-8 py-3 rounded-full bg-surface-container border border-white/10 hover:border-tertiary/50 transition-all duration-500 ${showMessage
+                ? "pointer-events-auto opacity-100"
+                : "pointer-events-none opacity-0"
+                }`}
               tabIndex={showMessage ? 0 : -1}
               aria-hidden={!showMessage}
             >
@@ -316,6 +333,13 @@ export default function FinaleClient() {
           .present-container:hover {
               transform: scale(1.02);
           }
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
       `}</style>
     </div>

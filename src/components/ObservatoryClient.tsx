@@ -10,55 +10,107 @@ import { useRealmGate } from "@/hooks/useRealmGate";
 const CONSTELLATIONS = [
   {
     name: "Sagittarius",
-    message: "You make people smile just by being you.",
+    message: "The constellation represents a centaur archer from Greek mythology, aiming an arrow toward Scorpius.",
     stars: [
-      { x: 16.5, y: 42.7 },
-      { x: 18.9, y: 43.1 },
-      { x: 21.8, y: 33.6 },
-      { x: 22.1, y: 43.3 },
-      { x: 23.6, y: 58.9 },
-      { x: 24.5, y: 38.0 },
-      { x: 26.0, y: 35.3 },
-      { x: 26.9, y: 53.1 },
-      { x: 27.4, y: 29.7 },
-      { x: 29.9, y: 48.4 },
-      { x: 30.0, y: 38.2 },
-      { x: 31.3, y: 43.1 },
-      { x: 32.0, y: 54.8 },
-      { x: 35.3, y: 44.3 },
-      { x: 35.4, y: 32.7 },
+      { x: 13, y: 81 },
+      { x: 12.7, y: 70.5 },
+      { x: 4.3, y: 75 },
+      { x: 2.3, y: 57.8 },
+      { x: 0.65, y: 38 },
+      { x: 9, y: 30 },
+      { x: 18, y: 38.5 },
+      { x: 19.25, y: 44 },
+      { x: 29.4, y: 57.4 },
+      { x: 31.3, y: 46.4 },
+      { x: 24.5, y: 38 },
+      { x: 30.3, y: 35 },
+      { x: 35.5, y: 26.5 },
+      { x: 35.3, y: 49.3 },
+      { x: 41.4, y: 45.5 },
+      { x: 30.6, y: 63.3 },
+      { x: 21.8, y: 35.4 },
+      { x: 21.8, y: 22.8 },
+      { x: 19.5, y: 23.5 },
+      { x: 15.5, y: 15.8 },
+      { x: 14.3, y: 13 },
     ],
+    connections: [
+      [0, 2],
+      [1, 2],
+      [2, 3],
+      [3, 4],
+      [4, 5],
+      [5, 6],
+      [6, 7],
+      [7, 8],
+      [7, 10],
+      [8, 9],
+      [9, 10],
+      [9, 11],
+      [10, 11],
+      [11, 12],
+      [9, 13],
+      [13, 14],
+      [13, 8],
+      [15, 8],
+      [10, 16],
+      [6, 16],
+      [16, 17],
+      [17, 18],
+      [18, 19],
+      [19, 20],
+    ],
+
   },
   {
     name: "Scorpius",
-    message: "You make ordinary days memorable.",
+    message: "Its brilliant red heart is Antares, a massive red supergiant nearly 700 times larger than our Sun.",
     stars: [
-      { x: 40.8, y: 71.7 },
-      { x: 44.4, y: 83.1 },
-      { x: 46.6, y: 74.1 },
-      { x: 50.6, y: 65.8 },
-      { x: 52.7, y: 75.9 },
-      { x: 57.6, y: 42.4 },
+      { x: 42, y: 69 },
+      { x: 39.3, y: 72.4 },
+      { x: 37.5, y: 74.1 },
+      { x: 39, y: 82.3 },
+      { x: 45, y: 85.4 },
+      { x: 49.4, y: 86 },
+      { x: 52.3, y: 77.2 },
+      { x: 54.3, y: 69 },
       { x: 60.9, y: 58.0 },
-      { x: 64.2, y: 55.2, accent: true }, // Antares
-      { x: 65.6, y: 62.3 },
-      { x: 66.3, y: 49.2 },
-      { x: 67.3, y: 63.2 },
-      { x: 68.6, y: 42.1 },
-      { x: 69.7, y: 59.6 },
-      { x: 70.9, y: 53.7 },
+      { x: 63.7, y: 55.2, accent: true }, // Antares
+      { x: 72.2, y: 61.7 },
+      { x: 74, y: 53.3 },
+      { x: 74, y: 46 },
+    ],
+    connections: [
+      [0, 1],
+      [1, 2],
+      [2, 3],
+      [3, 4],
+      [4, 5],
+      [5, 6],
+      [6, 7],
+      [7, 8],
+      [8, 9],
+      [9, 10],
+      [9, 11],
+      [9, 12],
     ],
   },
   {
     name: "Libra",
-    message: "You are stronger than you realize.",
+    message: "It symbolizes the scales of justice, balance, and harmony.",
     stars: [
-      { x: 79.3, y: 35.1 },
-      { x: 80.9, y: 51.4 },
-      { x: 82.8, y: 42.1 },
-      { x: 86.2, y: 47.7 },
-      { x: 89.3, y: 60.1 },
-      { x: 92.2, y: 35.2 },
+      { x: 79.3, y: 42 },
+      { x: 86, y: 42.2 },
+      { x: 95., y: 35.7 },
+      { x: 98.4, y: 58.6 },
+      { x: 87.5, y: 74.5 },
+    ],
+    connections: [
+      [0, 1],
+      [1, 2],
+      [2, 3],
+      [3, 4],
+      [4, 1],
     ],
   },
 ] as const;
@@ -73,6 +125,7 @@ export default function ObservatoryClient() {
   const [constellationName, setConstellationName] = useState("");
   const [constellationMessage, setConstellationMessage] = useState("");
   const [pulseKey, setPulseKey] = useState<string | null>(null);
+  const [hoveredConstellation, setHoveredConstellation] = useState<string | null>(null);
 
   const createStarDust = useCallback((x: number, y: number) => {
     for (let i = 0; i < 10; i++) {
@@ -126,6 +179,39 @@ export default function ObservatoryClient() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40 pointer-events-none" />
 
+          {/* Connected lines for constellations */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+            {CONSTELLATIONS.map((c) => {
+              const found = progress.observatoryFound.includes(c.name);
+              const isHovered = hoveredConstellation === c.name;
+
+              // Support user-defined connections, fallback to consecutive connection
+              const connections = "connections" in c
+                ? (c.connections as readonly (readonly [number, number])[])
+                : c.stars.slice(0, -1).map((_, idx) => [idx, idx + 1] as const);
+
+              return (
+                <g key={`lines-${c.name}`}>
+                  {connections.map(([startIdx, endIdx], i) => {
+                    const star = c.stars[startIdx];
+                    const nextStar = c.stars[endIdx];
+                    if (!star || !nextStar) return null;
+                    return (
+                      <line
+                        key={`line-${c.name}-${i}`}
+                        x1={`${star.x}%`}
+                        y1={`${star.y}%`}
+                        x2={`${nextStar.x}%`}
+                        y2={`${nextStar.y}%`}
+                        className={`constellation-line ${found ? "line-found" : ""} ${isHovered ? "line-hovered" : ""}`}
+                      />
+                    );
+                  })}
+                </g>
+              );
+            })}
+          </svg>
+
           {CONSTELLATIONS.map((c) =>
             c.stars.map((star, i) => {
               const key = `${c.name}-${i}`;
@@ -136,9 +222,8 @@ export default function ObservatoryClient() {
                   key={key}
                   type="button"
                   aria-label={`${c.name} star ${i + 1}`}
-                  className={`obs-star absolute z-10 -translate-x-1/2 -translate-y-1/2 rounded-full touch-manipulation cursor-pointer border-0 p-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-tertiary focus-visible:outline-offset-2 ${
-                    pulseKey === key ? "obs-star-pulse" : ""
-                  } ${found ? "obs-star-found" : ""} ${accent ? "obs-star-accent" : ""}`}
+                  className={`obs-star absolute z-10 -translate-x-1/2 -translate-y-1/2 rounded-full touch-manipulation cursor-pointer border-0 p-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-tertiary focus-visible:outline-offset-2 ${pulseKey === key ? "obs-star-pulse" : ""
+                    } ${found ? "obs-star-found" : ""} ${accent ? "obs-star-accent" : ""}`}
                   style={{
                     left: `${star.x}%`,
                     top: `${star.y}%`,
@@ -149,6 +234,10 @@ export default function ObservatoryClient() {
                     e.stopPropagation();
                     discover(c.name, c.message, key, e.clientX, e.clientY);
                   }}
+                  onMouseEnter={() => setHoveredConstellation(c.name)}
+                  onMouseLeave={() => setHoveredConstellation(null)}
+                  onFocus={() => setHoveredConstellation(c.name)}
+                  onBlur={() => setHoveredConstellation(null)}
                 />
               );
             })
@@ -181,11 +270,10 @@ export default function ObservatoryClient() {
       </div>
 
       <div
-        className={`fixed bottom-[max(1rem,var(--safe-bottom))] left-1/2 -translate-x-1/2 z-30 w-full max-w-[min(400px,94vw)] px-3 transition-all duration-700 ${
-          panelVisible
-            ? "opacity-100 pointer-events-auto translate-y-0"
-            : "opacity-0 pointer-events-none translate-y-5"
-        }`}
+        className={`fixed bottom-[max(1rem,var(--safe-bottom))] left-1/2 -translate-x-1/2 z-30 w-full max-w-[min(400px,94vw)] px-3 transition-all duration-700 ${panelVisible
+          ? "opacity-100 pointer-events-auto translate-y-0"
+          : "opacity-0 pointer-events-none translate-y-5"
+          }`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="constellation-title"
@@ -289,6 +377,24 @@ export default function ObservatoryClient() {
           50% {
             opacity: 1;
           }
+        }
+        .constellation-line {
+          stroke: rgba(255, 255, 255, 0.15);
+          stroke-width: 1.5;
+          stroke-dasharray: 4 2;
+          transition: stroke 0.4s ease, stroke-width 0.4s ease, filter 0.4s ease;
+        }
+        .constellation-line.line-hovered {
+          stroke: rgba(233, 195, 73, 0.85);
+          stroke-width: 2;
+          stroke-dasharray: none;
+          filter: drop-shadow(0 0 5px rgba(233, 195, 73, 0.9));
+        }
+        .constellation-line.line-found {
+          stroke: rgba(233, 195, 73, 0.7);
+          stroke-width: 2;
+          stroke-dasharray: none;
+          filter: drop-shadow(0 0 3px rgba(233, 195, 73, 0.6));
         }
       `}</style>
     </div>
