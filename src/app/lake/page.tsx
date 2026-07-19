@@ -240,6 +240,13 @@ void main() {
         phase: Math.random()*Math.PI*2,
         rotSpeed: (Math.random()-0.5)*0.01
       };
+      // Invisible touch helper for phones
+      const hit = new THREE.Mesh(
+        new THREE.SphereGeometry(1.1, 8, 8),
+        new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false })
+      );
+      hit.position.y = 0.2;
+      boat.add(hit);
       boatGroup.add(boat);
     }
     scene.add(boatGroup);
@@ -412,12 +419,12 @@ void main() {
           />
         </header>
         
-        <main className="flex-grow flex flex-col items-center justify-center text-center px-gutter pointer-events-none">
-          <div className="glass-panel p-8 md:p-12 rounded-[32px] max-w-2xl floating-element">
-            <h1 className="font-display-story text-[32px] md:text-[48px] text-on-surface mb-4 tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+        <main className="flex-grow flex flex-col items-center justify-start sm:justify-center text-center px-gutter pt-2 sm:pt-0 pointer-events-none">
+          <div className="glass-panel p-4 sm:p-8 md:p-12 rounded-2xl sm:rounded-[32px] max-w-2xl floating-element">
+            <h1 className="font-display-story text-[clamp(1.5rem,5vw,48px)] text-on-surface mb-2 sm:mb-4 tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
                 Star-filled Reflections
             </h1>
-            <p className="font-body-lg text-[18px] text-on-surface-variant max-w-md mx-auto leading-relaxed">
+            <p className="font-body-lg text-[14px] sm:text-[18px] text-on-surface-variant max-w-md mx-auto leading-relaxed">
                 Touch the floating memories to gather the starlight.
             </p>
           </div>

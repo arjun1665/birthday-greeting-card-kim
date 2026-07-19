@@ -21,7 +21,7 @@ const DESTINATIONS: {
     href: REALM_PATHS.cottage,
     label: "Cottage",
     icon: "home_pin",
-    position: "top-[30%] left-[20%] md:left-[30%]",
+    position: "top-[22%] left-[6%] sm:top-[30%] sm:left-[20%] md:left-[30%]",
     delayClass: "float",
   },
   {
@@ -29,7 +29,7 @@ const DESTINATIONS: {
     href: REALM_PATHS.observatory,
     label: "Observatory",
     icon: "visibility",
-    position: "top-[20%] right-[20%] md:right-[30%]",
+    position: "top-[14%] right-[4%] sm:top-[20%] sm:right-[20%] md:right-[30%]",
     delayClass: "float-delayed-1",
   },
   {
@@ -37,7 +37,7 @@ const DESTINATIONS: {
     href: REALM_PATHS.tree,
     label: "Ancient Tree",
     icon: "park",
-    position: "bottom-[35%] left-[15%] md:left-[25%]",
+    position: "bottom-[28%] left-[4%] sm:bottom-[35%] sm:left-[15%] md:left-[25%]",
     delayClass: "float-delayed-2",
   },
   {
@@ -45,7 +45,7 @@ const DESTINATIONS: {
     href: REALM_PATHS.lake,
     label: "Star Lake",
     icon: "water",
-    position: "top-[55%] right-[15%] md:right-[20%]",
+    position: "top-[58%] right-[4%] sm:top-[55%] sm:right-[15%] md:right-[20%]",
     delayClass: "float-delayed-3",
   },
   {
@@ -53,7 +53,7 @@ const DESTINATIONS: {
     href: REALM_PATHS.finale,
     label: "Giant Present",
     icon: "redeem",
-    position: "bottom-[25%] right-[15%] md:right-[25%]",
+    position: "bottom-[16%] right-[8%] sm:bottom-[25%] sm:right-[15%] md:right-[25%]",
     delayClass: "float-delayed-3",
   },
 ];
@@ -425,16 +425,16 @@ void main() {
     <Link
       key={dest.id}
       href={dest.href}
-      className={`absolute ${dest.position} ${dest.delayClass} pointer-events-auto group`}
+      className={`absolute ${dest.position} ${dest.delayClass} pointer-events-auto group max-w-[46vw] sm:max-w-none`}
     >
-      <div className="flex items-center gap-2 sm:gap-3 rounded-full glass-panel px-3 sm:px-6 py-2 sm:py-3 transition-all duration-500 hover:shadow-[inset_0_0_20px_rgba(233,195,73,0.3)] hover:scale-105 hover:border-tertiary/30">
+      <div className="flex items-center gap-1.5 sm:gap-3 rounded-full glass-panel px-2.5 sm:px-6 py-2 sm:py-3 transition-all duration-500 hover:shadow-[inset_0_0_20px_rgba(233,195,73,0.3)] hover:scale-105 hover:border-tertiary/30">
         <span
-          className="material-symbols-outlined text-secondary group-hover:text-tertiary transition-colors text-[20px] sm:text-[24px]"
+          className="material-symbols-outlined text-secondary group-hover:text-tertiary transition-colors text-[18px] sm:text-[24px] shrink-0"
           style={{ fontVariationSettings: "'FILL' 1" }}
         >
           {dest.icon}
         </span>
-        <span className="font-body-lg text-[14px] sm:text-[18px] text-on-surface-variant group-hover:text-on-surface">
+        <span className="font-body-lg text-[12px] sm:text-[18px] text-on-surface-variant group-hover:text-on-surface truncate">
           {dest.label}
         </span>
       </div>

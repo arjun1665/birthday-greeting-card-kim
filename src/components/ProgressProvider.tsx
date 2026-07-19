@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -43,6 +44,8 @@ const ProgressContext = createContext<ProgressContextValue | null>(null);
 export function ProgressProvider({ children }: { children: ReactNode }) {
   const [progress, setProgress] = useState<ProgressState>(DEFAULT_PROGRESS);
   const [ready, setReady] = useState(false);
+  /** Skip the first post-hydrate save so DEFAULT never overwrites localStorage. */
+  const skipNextSave = useRef(true);
 
   useEffect(() => {
     setProgress(loadProgress());
@@ -51,6 +54,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!ready) return;
+    if (skipNextSave.current) {
+      skipNextSave.current = false;
+      return;
+    }
     saveProgress(progress);
   }, [progress, ready]);
 

@@ -8,8 +8,8 @@ import { useRealmGate } from "@/hooks/useRealmGate";
 import { getPixelRatioCap, useLiteGraphics } from "@/hooks/useViewport";
 
 export default function Finale() {
-  useRealmGate("finale");
-  const { ready, progress, completeFinale } = useProgress();
+  const { ready, allowed } = useRealmGate("finale");
+  const { progress, completeFinale } = useProgress();
   const lite = useLiteGraphics();
   const [isOpened, setIsOpened] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
@@ -170,13 +170,15 @@ export default function Finale() {
       }
   };
 
-  const handleOpenPresent = (e: React.MouseEvent) => {
-    if (isOpened) return;
+  const handleOpenPresent = (e: React.MouseEvent | React.PointerEvent) => {
+    if (isOpened || !allowed) return;
+    e.preventDefault();
+    e.stopPropagation();
     setIsOpened(true);
     completeFinale();
     createFireworks(e.clientX, e.clientY);
     setTimeout(() => {
-        setShowMessage(true);
+      setShowMessage(true);
     }, 1000);
   };
 
@@ -184,41 +186,43 @@ export default function Finale() {
     <div className="fixed inset-0 overflow-hidden bg-surface flex flex-col dark selection:bg-secondary-container selection:text-on-secondary-container">
       <div className="absolute inset-0 z-0 pointer-events-none" id="starfield"></div>
 
-      <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center gap-3 pt-[max(1rem,var(--safe-top))] px-[max(1rem,var(--safe-left))] pr-[max(1rem,var(--safe-right))] py-4 bg-transparent">
-        <BackToIsland className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-full glass-panel text-on-surface-variant hover:text-tertiary transition-colors" />
-        <Link
-          href="/?island=true"
-          className="font-display-story text-[clamp(1.25rem,3.5vw,2.5rem)] text-primary tracking-tight hover:text-tertiary transition-colors truncate"
-        >
+      <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center gap-3 pt-[max(1rem,var(--safe-top))] px-[max(1rem,var(--safe-left))] pr-[max(1rem,var(--safe-right))] py-4 bg-transparent pointer-events-none">
+        <div className="pointer-events-auto">
+          <BackToIsland className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-full glass-panel text-on-surface-variant hover:text-tertiary transition-colors" />
+        </div>
+        <span className="font-display-story text-[clamp(1.25rem,3.5vw,2.5rem)] text-primary tracking-tight truncate pointer-events-none">
           Astra for Kim
-        </Link>
+        </span>
         <span
-          className="material-symbols-outlined text-tertiary text-[22px] sm:text-[28px] shrink-0"
+          className="material-symbols-outlined text-tertiary text-[22px] sm:text-[28px] shrink-0 pointer-events-none"
           style={{ fontVariationSettings: "'FILL' 1" }}
         >
           redeem
         </span>
       </header>
 
-      <main className="flex-1 relative z-10 flex flex-col items-center justify-center px-4 sm:px-margin-desktop pt-20 sm:pt-24 pb-[max(1.5rem,var(--safe-bottom))] h-full overflow-hidden">
+      <main className="flex-1 relative z-10 flex flex-col items-center justify-center px-4 sm:px-margin-desktop pt-[max(5rem,calc(var(--safe-top)+4rem))] pb-[max(1.5rem,var(--safe-bottom))] h-full overflow-hidden">
         <div
-          className={`relative w-full max-w-4xl aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] max-h-[min(62dvh,520px)] rounded-2xl sm:rounded-3xl overflow-hidden glass-panel flex items-center justify-center present-container z-20 shadow-[0_0_50px_rgba(233,195,73,0.1)] ${
+          className={`relative w-full max-w-4xl aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] max-h-[min(58dvh,520px)] rounded-2xl sm:rounded-3xl overflow-hidden glass-panel flex items-center justify-center present-container z-20 shadow-[0_0_50px_rgba(233,195,73,0.1)] ${
             isOpened ? "pointer-events-none" : "cursor-pointer"
           }`}
-          onClick={handleOpenPresent}
+          onPointerDown={handleOpenPresent}
           onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") handleOpenPresent(e as unknown as React.MouseEvent);
+            if (e.key === "Enter" || e.key === " ") {
+              handleOpenPresent(e as unknown as React.MouseEvent);
+            }
           }}
           role="button"
           tabIndex={0}
+          aria-label="Open your final gift"
         >
           <div className="absolute inset-0 z-10 w-full h-full pointer-events-none">
             <div ref={threeContainerRef} className="absolute inset-0 w-full h-full" />
           </div>
 
           <div
-            className={`absolute inset-0 z-20 flex flex-col items-center justify-center bg-surface/40 backdrop-blur-sm transition-opacity duration-1000 px-4 ${
-              isOpened ? "opacity-0 pointer-events-none" : "opacity-100"
+            className={`absolute inset-0 z-20 flex flex-col items-center justify-center bg-surface/40 backdrop-blur-sm transition-opacity duration-1000 px-4 pointer-events-none ${
+              isOpened ? "opacity-0" : "opacity-100"
             }`}
           >
             <span
@@ -241,7 +245,7 @@ export default function Finale() {
             showMessage ? "active pointer-events-auto" : "pointer-events-none"
           }`}
         >
-          <div className="glass-panel p-6 sm:p-10 rounded-2xl sm:rounded-3xl text-center shadow-[0_0_100px_rgba(233,195,73,0.2)] border border-tertiary/20 flex flex-col items-center max-w-3xl">
+          <div className="glass-panel p-6 sm:p-10 rounded-2xl sm:rounded-3xl text-center shadow-[0_0_100px_rgba(233,195,73,0.2)] border border-tertiary/20 flex flex-col items-center max-w-3xl max-h-[min(85dvh,720px)] overflow-y-auto">
             <h2 className="font-display-story text-[clamp(1.75rem,5vw,3.5rem)] text-tertiary glow-text mb-4 sm:mb-6">
               Happy Birthday, Kim.
             </h2>
@@ -298,8 +302,10 @@ export default function Finale() {
         .present-container {
             transition: transform 0.3s ease;
         }
-        .present-container:hover {
-            transform: scale(1.02);
+        @media (hover: hover) and (pointer: fine) {
+          .present-container:hover {
+              transform: scale(1.02);
+          }
         }
       `}</style>
     </div>

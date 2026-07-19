@@ -159,28 +159,28 @@ export default function AncientTree() {
           </div>
         </header>
 
-        <main className="flex-grow flex flex-col items-center justify-center pointer-events-none text-center gap-4 sm:gap-6 px-2">
-          <h1 className="font-display-story text-[clamp(1.75rem,6vw,3rem)] text-primary drop-shadow-[0_0_15px_rgba(193,198,220,0.3)] tracking-tight">
+        <main className="flex-grow flex flex-col items-center justify-center pointer-events-none text-center gap-3 sm:gap-6 px-2">
+          <h1 className="font-display-story text-[clamp(1.5rem,6vw,3rem)] text-primary drop-shadow-[0_0_15px_rgba(193,198,220,0.3)] tracking-tight">
             Ancient Tree
           </h1>
-          <p className="font-body-lg text-[15px] sm:text-[18px] text-on-surface-variant max-w-md opacity-80">
+          <p className="font-body-lg text-[14px] sm:text-[18px] text-on-surface-variant max-w-md opacity-80 px-2">
             Catch a falling petal to reveal a quiet truth.
           </p>
         </main>
 
-        <footer className="flex flex-col items-center gap-4 pointer-events-auto">
-          <div className="glass-panel flex items-center gap-2 px-5 py-3 rounded-full pointer-events-auto">
+        <footer className="flex flex-col items-center gap-3 sm:gap-4 pointer-events-auto">
+          <div className="glass-panel flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full pointer-events-auto">
             <span
               className="material-symbols-outlined text-tertiary star-glow"
               style={{ fontVariationSettings: "'FILL' 1" }}
             >
               star
             </span>
-            <span className="font-label-caps text-[12px] uppercase text-tertiary tracking-widest">
+            <span className="font-label-caps text-[11px] sm:text-[12px] uppercase text-tertiary tracking-widest">
               {starsCollected} / {maxStars} Stars Collected
             </span>
           </div>
-          <span className="font-label-caps text-[12px] tracking-widest text-on-surface-variant uppercase opacity-50 pointer-events-none">
+          <span className="font-label-caps text-[11px] sm:text-[12px] tracking-widest text-on-surface-variant uppercase opacity-50 pointer-events-none hidden sm:inline">
             The Floating Realms
           </span>
         </footer>
