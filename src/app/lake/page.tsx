@@ -6,26 +6,42 @@ import { useProgress } from "@/components/ProgressProvider";
 import { useRealmGate } from "@/hooks/useRealmGate";
 import { STARS_TO_COMPLETE } from "@/lib/progress";
 
-const LAKE_MEMORIES = [
+const LAKE_MEMORIES: {
+  type: "photo" | "audio";
+  title: string;
+  caption: string;
+  /** Drop files into /public/memories/ using these paths */
+  src: string;
+}[] = [
   {
+    type: "photo",
     title: "A Quiet Evening",
     caption: "A soft memory waiting for its photo.",
+    src: "/memories/photo-1.jpg",
   },
   {
+    type: "audio",
     title: "Shared Laughter",
-    caption: "A moment that still glows like starlight.",
+    caption: "A voice note saved like starlight — press play when ready.",
+    src: "/memories/audio-1.mp3",
   },
   {
+    type: "photo",
     title: "Warm Light",
-    caption: "Placeholder for a favorite picture together.",
+    caption: "A favorite picture together.",
+    src: "/memories/photo-2.jpg",
   },
   {
+    type: "audio",
     title: "Tiny Adventures",
-    caption: "A frame ready for a treasured snapshot.",
+    caption: "A little soundtrack from the journey — press play when ready.",
+    src: "/memories/audio-2.mp3",
   },
   {
+    type: "photo",
     title: "Star Lake Wish",
     caption: "One last reflection to hold forever.",
+    src: "/memories/photo-3.jpg",
   },
 ];
 
@@ -38,6 +54,11 @@ export default function StarLake() {
   const [starPositions, setStarPositions] = useState<{id: number, startX: number, startY: number, endX: number, endY: number}[]>([]);
   const [panelVisible, setPanelVisible] = useState(false);
   const [memoryIndex, setMemoryIndex] = useState(0);
+  const [photoFailed, setPhotoFailed] = useState(false);
+  const [audioPlaying, setAudioPlaying] = useState(false);
+  const [audioReady, setAudioReady] = useState(false);
+  const [audioError, setAudioError] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const maxStars = STARS_TO_COMPLETE;
   const starIdCounter = useRef(0);
   const starsRef = useRef(0);
@@ -50,6 +71,47 @@ export default function StarLake() {
       setStarsCollected(progress.lakeStars);
     }
   }, [ready, progress.lakeStars]);
+
+  const activeMemory = LAKE_MEMORIES[memoryIndex];
+
+  useEffect(() => {
+    setPhotoFailed(false);
+    setAudioPlaying(false);
+    setAudioReady(false);
+    setAudioError(false);
+    const el = audioRef.current;
+    if (el) {
+      el.pause();
+      el.currentTime = 0;
+    }
+  }, [memoryIndex, panelVisible]);
+
+  useEffect(() => {
+    if (!panelVisible) {
+      const el = audioRef.current;
+      if (el) {
+        el.pause();
+        setAudioPlaying(false);
+      }
+    }
+  }, [panelVisible]);
+
+  const toggleAudio = async () => {
+    const el = audioRef.current;
+    if (!el || audioError) return;
+    try {
+      if (el.paused) {
+        await el.play();
+        setAudioPlaying(true);
+      } else {
+        el.pause();
+        setAudioPlaying(false);
+      }
+    } catch {
+      setAudioError(true);
+      setAudioPlaying(false);
+    }
+  };
 
   // Three.js Boat Scene
   useEffect(() => {
@@ -314,7 +376,7 @@ export default function StarLake() {
         </footer>
       </div>
 
-      {/* Memory photo placeholder panel (Observatory-style) */}
+      {/* Memory panel — 3 photos + 2 audio */}
       <div
         className={`fixed bottom-[max(5.5rem,calc(var(--safe-bottom)+4.5rem))] left-1/2 -translate-x-1/2 z-40 w-full max-w-[min(400px,94vw)] px-3 transition-all duration-700 ${
           panelVisible
@@ -323,22 +385,98 @@ export default function StarLake() {
         }`}
       >
         <div className="glass-panel rounded-2xl p-5 sm:p-7 text-center relative overflow-hidden border border-tertiary/15">
-          <div className="mx-auto mb-4 w-full max-w-[240px] aspect-[4/3] rounded-xl border border-dashed border-white/25 bg-white/5 flex flex-col items-center justify-center gap-2">
-            <span className="material-symbols-outlined text-tertiary text-3xl opacity-80">photo_camera</span>
-            <span className="font-label-caps text-[10px] uppercase tracking-widest text-on-surface-variant/70">
-              Photo placeholder
-            </span>
-          </div>
+          {activeMemory?.type === "photo" ? (
+            <div className="mx-auto mb-4 w-full max-w-[240px] aspect-[4/3] rounded-xl border border-dashed border-white/25 bg-white/5 overflow-hidden relative">
+              {!photoFailed ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={activeMemory.src}
+                  src={activeMemory.src}
+                  alt={activeMemory.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  onError={() => setPhotoFailed(true)}
+                />
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-3">
+                  <span className="material-symbols-outlined text-tertiary text-3xl opacity-80">
+                    photo_camera
+                  </span>
+                  <span className="font-label-caps text-[10px] uppercase tracking-widest text-on-surface-variant/70">
+                    Add photo-{(memoryIndex === 0 ? 1 : memoryIndex === 2 ? 2 : 3)}.jpg
+                  </span>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="mx-auto mb-4 w-full max-w-[280px] rounded-xl border border-white/15 bg-white/5 p-4 sm:p-5 flex flex-col items-center gap-3">
+              <span
+                className="material-symbols-outlined text-tertiary text-4xl"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                music_note
+              </span>
+              <button
+                type="button"
+                onClick={toggleAudio}
+                className="inline-flex items-center justify-center gap-2 min-h-[44px] min-w-[44px] px-5 py-2.5 rounded-full bg-tertiary/15 border border-tertiary/30 text-tertiary touch-manipulation active:scale-95 transition-transform"
+                aria-label={audioPlaying ? "Pause audio" : "Play audio"}
+              >
+                <span
+                  className="material-symbols-outlined text-[22px]"
+                  style={{ fontVariationSettings: "'FILL' 1" }}
+                >
+                  {audioPlaying ? "pause" : "play_arrow"}
+                </span>
+                <span className="font-label-caps text-[11px] uppercase tracking-widest">
+                  {audioError ? "Add audio file" : audioPlaying ? "Pause" : "Play"}
+                </span>
+              </button>
+              {audioError && (
+                <span className="font-label-caps text-[10px] uppercase tracking-widest text-on-surface-variant/70">
+                  Drop audio-{(memoryIndex === 1 ? 1 : 2)}.mp3 in /public/memories
+                </span>
+              )}
+              {audioReady && !audioError && (
+                <span className="font-label-caps text-[10px] uppercase tracking-widest text-on-surface-variant/60">
+                  {audioPlaying ? "Playing…" : "Ready"}
+                </span>
+              )}
+              <audio
+                ref={audioRef}
+                src={activeMemory?.src}
+                preload="metadata"
+                playsInline
+                onCanPlay={() => {
+                  setAudioReady(true);
+                  setAudioError(false);
+                }}
+                onError={() => {
+                  setAudioError(true);
+                  setAudioReady(false);
+                  setAudioPlaying(false);
+                }}
+                onEnded={() => setAudioPlaying(false)}
+                onPause={() => setAudioPlaying(false)}
+                onPlay={() => setAudioPlaying(true)}
+              />
+            </div>
+          )}
+
           <h2 className="font-headline-md text-[20px] sm:text-[24px] text-tertiary mb-2">
-            {LAKE_MEMORIES[memoryIndex]?.title}
+            {activeMemory?.title}
           </h2>
-          <p className="font-body-md text-[14px] sm:text-[16px] text-on-surface/90 leading-relaxed italic mb-4">
-            {LAKE_MEMORIES[memoryIndex]?.caption}
+          <p className="font-body-md text-[14px] sm:text-[16px] text-on-surface/90 leading-relaxed italic mb-4 px-1">
+            {activeMemory?.caption}
           </p>
           <button
             type="button"
-            className="font-label-caps text-[12px] text-outline hover:text-primary transition-colors tracking-widest uppercase cursor-pointer"
-            onClick={() => setPanelVisible(false)}
+            className="font-label-caps text-[12px] text-outline hover:text-primary transition-colors tracking-widest uppercase cursor-pointer min-h-[44px] px-4 touch-manipulation"
+            onClick={() => {
+              const el = audioRef.current;
+              if (el) el.pause();
+              setAudioPlaying(false);
+              setPanelVisible(false);
+            }}
           >
             Close
           </button>
