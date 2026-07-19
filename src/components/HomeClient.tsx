@@ -516,15 +516,6 @@ void main() {
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
 
-    const isPopupRose = (object: any) => {
-      let current = object;
-      while (current) {
-        if (current.userData?.popupRose) return true;
-        current = current.parent;
-      }
-      return false;
-    };
-
     const easeOutBack = (t: number) => {
       const c1 = 1.70158, c3 = c1 + 1;
       return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
@@ -547,7 +538,7 @@ void main() {
       pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
       raycaster.setFromCamera(pointer, camera);
-      const hit = raycaster.intersectObjects(islandGroup.children, true).find((intersection: any) => isPopupRose(intersection.object));
+      const hit = raycaster.intersectObjects(islandGroup.children, true).length > 0;
       if (hit) {
         triggerRosePop();
         // Open the message popup via React state
