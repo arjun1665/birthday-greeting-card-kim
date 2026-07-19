@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ancient Cherry Blossom Tree</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500&amp;family=Playfair+Display:wght@500;700&amp;family=Space+Grotesk:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#241a00",
+                      "error-container": "#93000a",
+                      "outline-variant": "#45464c",
+                      "on-surface": "#e2e2e2",
+                      "tertiary-fixed-dim": "#e9c349",
+                      "inverse-primary": "#585e71",
+                      "on-primary": "#2a3041",
+                      "surface-dim": "#121414",
+                      "inverse-surface": "#e2e2e2",
+                      "surface-container-low": "#1a1c1c",
+                      "secondary": "#d2bbff",
+                      "on-surface-variant": "#c6c6cd",
+                      "inverse-on-surface": "#2f3131",
+                      "on-secondary": "#3d1281",
+                      "on-tertiary-fixed-variant": "#574500",
+                      "tertiary-container": "#181100",
+                      "surface-container-high": "#282a2b",
+                      "on-tertiary-container": "#987a00",
+                      "surface-container-highest": "#333535",
+                      "outline": "#909097",
+                      "surface-bright": "#38393a",
+                      "surface-tint": "#c1c6dc",
+                      "on-secondary-fixed-variant": "#543098",
+                      "tertiary-fixed": "#ffe088",
+                      "surface-container-lowest": "#0c0f0f",
+                      "primary-fixed": "#dde2f9",
+                      "surface-container": "#1e2020",
+                      "secondary-fixed-dim": "#d2bbff",
+                      "primary-container": "#0b1121",
+                      "on-error": "#690005",
+                      "on-primary-container": "#777c91",
+                      "primary-fixed-dim": "#c1c6dc",
+                      "secondary-fixed": "#eaddff",
+                      "on-secondary-container": "#c6aaff",
+                      "tertiary": "#e9c349",
+                      "on-primary-fixed-variant": "#414659",
+                      "surface": "#121414",
+                      "primary": "#c1c6dc",
+                      "on-secondary-fixed": "#25005a",
+                      "on-primary-fixed": "#151b2c",
+                      "on-background": "#e2e2e2",
+                      "background": "#121414",
+                      "surface-variant": "#333535",
+                      "on-tertiary": "#3c2f00",
+                      "on-error-container": "#ffdad6",
+                      "secondary-container": "#56329b",
+                      "error": "#ffb4ab"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "64px",
+                      "gutter": "24px",
+                      "container-max": "1200px",
+                      "unit": "8px",
+                      "margin-mobile": "20px"
+              },
+              "fontFamily": {
+                      "label-caps": [
+                              "Space Grotesk"
+                      ],
+                      "display-story-mobile": [
+                              "Playfair Display"
+                      ],
+                      "body-md": [
+                              "DM Sans"
+                      ],
+                      "headline-md": [
+                              "Playfair Display"
+                      ],
+                      "display-story": [
+                              "Playfair Display"
+                      ],
+                      "body-lg": [
+                              "DM Sans"
+                      ]
+              },
+              "fontSize": {
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-story-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-story": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        @keyframes float-down {
+            0% {
+                transform: translateY(-10vh) rotate(0deg) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg) translateX(20px);
+                opacity: 0;
+            }
+        }
+
+        .interactive-petal {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background-color: rgba(210, 187, 255, 0.4); /* Based on secondary token */
+            border-radius: 0 50% 50% 50%;
+            transform: rotate(45deg);
+            box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.5), 0 0 10px rgba(210, 187, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 20;
+            /* Filter to give a soft, frosted look */
+            backdrop-filter: blur(2px);
+        }
+
+        .interactive-petal:hover {
+            transform: scale(1.2) rotate(45deg);
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.8), 0 0 20px rgba(210, 187, 255, 0.6);
+            background-color: rgba(210, 187, 255, 0.7);
+        }
+
+        .compliment-reveal {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1s ease-in-out, transform 1s ease-out;
+            z-index: 30;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5), 0 0 20px rgba(210, 187, 255, 0.4);
+        }
+
+        .compliment-active {
+            opacity: 1;
+            transform: translate(-50%, -100%);
+        }
+
+        /* Glassmorphism utility */
+        .glass-panel {
+            background: rgba(18, 20, 20, 0.4); /* surface color with opacity */
+            backdrop-filter: blur(16px);
+            border: 0.5px solid rgba(226, 226, 226, 0.1); /* on-surface subtle */
+        }
+        
+        .star-glow {
+            filter: drop-shadow(0 0 8px rgba(233, 195, 73, 0.8));
+        }
+    </style>
+</head>
+<body class="bg-primary-container h-screen w-screen overflow-hidden relative text-on-surface select-none">
+<!-- Background Layers -->
+<!-- Immersive Background Image -->
+<div class="absolute inset-0 w-full h-full z-0 opacity-60 mix-blend-screen" data-alt="A breathtaking, ancient cherry blossom tree standing alone in a magical, ethereal night landscape. The massive tree glows softly with bioluminescent pink and lavender blossoms. The background is a deep, starry midnight blue sky with subtle, swirling nebulas. Studio Ghibli style meets hyper-realistic digital art. Soft, atmospheric lighting, dreamy and nostalgic mood, high resolution, soft-minimalism aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDVubUd1SN_PAJv5SV1OT_D_9nP-YAgeIh5qeuJBzzLrYmK58Ig7Crgvi1_63-JqTWaUrgW1qm0H6GOxLbmaVYa_EPx7q3qwAEWIamj_P7Tm_KGNDMI6nKKkCyP1DDPzKHInwaqUDM95buKLjn1Gkjpp4rOz2V4NWuAUO0FlJirms8o-6GtatEZJRm3ql9VR3NuUsVNbGncvr8nl6dzyQaOTXrJJ1i0QJ5HhoLGsChiao3wPUjo4eft'); background-size: cover; background-position: center;">
+</div>
+<!-- 3D Falling Petals Background Animation -->
+
+<!-- Gradient Overlay for atmospheric depth -->
+<div class="absolute inset-0 bg-gradient-to-t from-primary-container via-transparent to-transparent z-10 pointer-events-none"></div>
+<!-- UI Layer -->
+<div class="relative z-40 w-full h-full flex flex-col justify-between p-margin-mobile md:p-margin-desktop">
+<!-- Contextual Navigation (Replacing standard shell as per rules for immersive scene) -->
+<header class="flex justify-between items-start">
+<button class="glass-panel flex items-center gap-2 px-6 py-3 rounded-full text-secondary hover:text-tertiary transition-colors duration-500 group" onclick="console.log('Navigate back')">
+<span class="material-symbols-outlined transition-transform duration-500 group-hover:-translate-x-1">arrow_back</span>
+<span class="font-label-caps text-label-caps uppercase">Back to Island</span>
+</button>
+<div class="glass-panel flex items-center gap-2 px-5 py-3 rounded-full pointer-events-auto">
+<span class="material-symbols-outlined text-tertiary star-glow" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-caps text-label-caps uppercase text-tertiary tracking-widest" id="star-counter">0 / 5 Stars Collected</span>
+</div>
+</header>
+<!-- Central Narrative Element -->
+<main class="flex-grow flex flex-col items-center justify-center pointer-events-none text-center gap-6">
+<h1 class="font-display-story text-display-story text-primary drop-shadow-[0_0_15px_rgba(193,198,220,0.3)] tracking-tight">
+                Ancient Tree
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md opacity-80">
+                Catch a falling petal to reveal a quiet truth.
+            </p>
+</main>
+<footer class="flex justify-center opacity-50 pointer-events-none">
+<span class="font-label-caps text-label-caps tracking-widest text-on-surface-variant">The Floating Realms</span>
+</footer>
+</div>
+<!-- Container for interactive petals -->
+<div class="absolute inset-0 z-20 overflow-hidden pointer-events-none" id="petal-container"></div>
+<script>
+        const compliments = [
+            "You make ordinary days memorable.",
+            "You make people smile.",
+            "Your presence brings peace.",
+            "You have a gentle spirit.",
+            "Your kindness radiates like starlight.",
+            "You are a quiet kind of wonderful.",
+            "The world is softer with you in it."
+        ];
+
+        const container = document.getElementById('petal-container');
+        const starCounterEl = document.getElementById('star-counter');
+        let starsCollected = 0;
+        const maxStars = 5;
+
+        function updateStarCounter() {
+            if (starsCollected <= maxStars) {
+                starCounterEl.innerText = `${starsCollected} / ${maxStars} Stars Collected`;
+            }
+        }
+
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'interactive-petal pointer-events-auto';
+            
+            // Randomize starting position, size, and animation duration
+            const startX = Math.random() * window.innerWidth;
+            const duration = 15 + Math.random() * 15; // 15s to 30s fall
+            const delay = Math.random() * 5;
+            const scale = 0.8 + Math.random() * 0.7;
+
+            petal.style.left = `${startX}px`;
+            petal.style.animation = `float-down ${duration}s linear ${delay}s infinite`;
+            petal.style.transform = `scale(${scale}) rotate(45deg)`;
+
+            // Interaction
+            petal.addEventListener('click', (e) => {
+                // Stop animation and fade out petal
+                petal.style.animationPlayState = 'paused';
+                petal.style.opacity = '0';
+                petal.style.pointerEvents = 'none';
+
+                // Increment star counter
+                if (starsCollected < maxStars) {
+                    starsCollected++;
+                    updateStarCounter();
+                }
+
+                // Create compliment text
+                const textEl = document.createElement('div');
+                textEl.className = 'compliment-reveal font-headline-md text-headline-md text-secondary';
+                textEl.style.left = `${e.clientX}px`;
+                textEl.style.top = `${e.clientY}px`;
+                
+                // Select random compliment
+                const complimentText = compliments[Math.floor(Math.random() * compliments.length)];
+                textEl.innerText = complimentText;
+
+                document.body.appendChild(textEl);
+
+                // Trigger reflow for animation
+                void textEl.offsetWidth;
+                textEl.classList.add('compliment-active');
+
+                // Cleanup
+                setTimeout(() => {
+                    textEl.style.opacity = '0';
+                    setTimeout(() => textEl.remove(), 1000);
+                    petal.remove();
+                }, 4000);
+            });
+
+            container.appendChild(petal);
+
+            // Cleanup petals that finish animation (optional, but good for long running)
+            petal.addEventListener('animationiteration', () => {
+                if(petal.style.opacity !== '0') {
+                    // reposition slightly on iteration to vary the stream
+                    petal.style.left = `${Math.random() * window.innerWidth}px`;
+                }
+            });
+        }
+
+        // Initially spawn a handful of interactive petals
+        for(let i = 0; i < 8; i++) {
+            createPetal();
+        }
+
+        // Occasionally add more
+        setInterval(() => {
+            if(document.querySelectorAll('.interactive-petal').length < 15) {
+                createPetal();
+            }
+        }, 3000);
+
+    </script>
+</body></html>

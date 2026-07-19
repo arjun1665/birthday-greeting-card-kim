@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kim's Birthday Finale</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500&amp;family=Playfair+Display:wght@500;700&amp;family=DM+Sans:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#241a00",
+                    "error-container": "#93000a",
+                    "outline-variant": "#45464c",
+                    "on-surface": "#e2e2e2",
+                    "tertiary-fixed-dim": "#e9c349",
+                    "inverse-primary": "#585e71",
+                    "on-primary": "#2a3041",
+                    "surface-dim": "#121414",
+                    "inverse-surface": "#e2e2e2",
+                    "surface-container-low": "#1a1c1c",
+                    "secondary": "#d2bbff",
+                    "on-surface-variant": "#c6c6cd",
+                    "inverse-on-surface": "#2f3131",
+                    "on-secondary": "#3d1281",
+                    "on-tertiary-fixed-variant": "#574500",
+                    "tertiary-container": "#181100",
+                    "surface-container-high": "#282a2b",
+                    "on-tertiary-container": "#987a00",
+                    "surface-container-highest": "#333535",
+                    "outline": "#909097",
+                    "surface-bright": "#38393a",
+                    "surface-tint": "#c1c6dc",
+                    "on-secondary-fixed-variant": "#543098",
+                    "tertiary-fixed": "#ffe088",
+                    "surface-container-lowest": "#0c0f0f",
+                    "primary-fixed": "#dde2f9",
+                    "surface-container": "#1e2020",
+                    "secondary-fixed-dim": "#d2bbff",
+                    "primary-container": "#0b1121",
+                    "on-error": "#690005",
+                    "on-primary-container": "#777c91",
+                    "primary-fixed-dim": "#c1c6dc",
+                    "secondary-fixed": "#eaddff",
+                    "on-secondary-container": "#c6aaff",
+                    "tertiary": "#e9c349",
+                    "on-primary-fixed-variant": "#414659",
+                    "surface": "#121414",
+                    "primary": "#c1c6dc",
+                    "on-secondary-fixed": "#25005a",
+                    "on-primary-fixed": "#151b2c",
+                    "on-background": "#e2e2e2",
+                    "background": "#121414",
+                    "surface-variant": "#333535",
+                    "on-tertiary": "#3c2f00",
+                    "on-error-container": "#ffdad6",
+                    "secondary-container": "#56329b",
+                    "error": "#ffb4ab"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "64px",
+                    "gutter": "24px",
+                    "container-max": "1200px",
+                    "unit": "8px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "label-caps": ["Space Grotesk"],
+                    "display-story-mobile": ["Playfair Display"],
+                    "body-md": ["DM Sans"],
+                    "headline-md": ["Playfair Display"],
+                    "display-story": ["Playfair Display"],
+                    "body-lg": ["DM Sans"]
+            },
+            "fontSize": {
+                    "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "500" }],
+                    "display-story-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                    "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                    "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                    "display-story": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                    "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle var(--duration, 4s) infinite ease-in-out;
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.1; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 20px theme('colors.tertiary');
+        }
+
+        .message-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .message-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Fireworks */
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: theme('colors.tertiary');
+            animation: explode 1s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        .present-container {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .present-container:hover {
+            transform: scale(1.02);
+        }
+
+        .fade-out {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-hidden bg-surface flex flex-col">
+<!-- Starry Background -->
+<div class="absolute inset-0 z-0 pointer-events-none" id="starfield"></div>
+<!-- TopAppBar (Web) -->
+<header class="hidden md:flex fixed top-0 left-0 w-full z-50 justify-between items-center px-margin-desktop py-8 bg-transparent flat no shadows no-border-or-shadow">
+<div class="font-display-story text-display-story text-primary tracking-tight">
+            Astra for Kim
+        </div>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-tertiary font-bold hover:text-tertiary transition-colors duration-500 scale-105 duration-700 ease-in-out">
+                redeem
+            </span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-tertiary transition-colors duration-500 scale-105 duration-700 ease-in-out">
+                auto_awesome
+            </span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-tertiary transition-colors duration-500 scale-105 duration-700 ease-in-out">
+                nights_stay
+            </span>
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden border border-outline/20">
+<img alt="Kim's Profile Avatar" class="w-full h-full object-cover" data-alt="A small, stylized profile avatar of a young woman named Kim, rendered in a dreamlike, ethereal aesthetic with soft lighting and a muted, sophisticated color palette featuring deep navy and subtle lavender tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIxBssAmQNs04hNI-9hz9mcn1oCLDElgMRvMOK-dLaW9pmD09QDClxbBGkJPjp4fPZOGIrISgr8yXmr0HNarojlSPaJW9dUXeWchtuU7mrdya5iVvj9SOGjlfTDh7I8SQw_BDF0sGjthTYvR2WN28uEN4uiVKJx1lUSpCPGdWen3o1rVAzolOSIsIVNwlBfUt4BVq-Lmp-08vsymQyp6QZHSdT7_3dMSHPwPhwlgLLsd1g3lqrcmf6"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Web) -->
+<nav class="hidden md:flex fixed left-0 top-0 h-full z-40 flex-col p-margin-desktop bg-surface/10 backdrop-blur-3xl border-r border-white/5 shadow-2xl shadow-primary/20 h-screen w-80 rounded-r-full transition-all cubic-bezier(0.4,0,0.2,1) duration-700">
+<div class="mt-20 mb-12 flex flex-col items-center">
+<div class="w-24 h-24 rounded-full bg-secondary-container mb-4 overflow-hidden border-2 border-secondary/30 shadow-[0_0_15px_rgba(210,187,255,0.2)]">
+<img alt="Constellation Map Icon" class="w-full h-full object-cover" data-alt="A circular constellation map icon, glowing softly with tiny stars against a deep midnight blue background, styled like a magical, ethereal star chart." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-9Ukbl8QV3Nsjg3BZ5aOoFYdzpr4ItnDFI8KHD1Vp8Sn2GgU-X-fQjVpNV8NhjEnZsuhnxeOow6_eTBtmKMv6TO23XJmbSAAPN5ial_gnqlUDytw1OfpyePFJ4lERivO5L1AMGgD-GE64IZOxxYUz9sfm9dXzAXctxlsLjHxt8e7N0qGxWQ5JM00waEUhAc3sreVb1zp7IO4We5zHLmO5L3X9OqMP5SgRm4G4htQ2gBIauQ9GgrgV"/>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface text-center">Island Map</h2>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-80 mt-2 text-center">Explore the floating realms</p>
+</div>
+<ul class="flex flex-col gap-4 flex-grow">
+<li class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-white/5 cursor-pointer text-on-surface-variant opacity-60 hover:opacity-100 hover:translate-x-2 transition-all duration-500">
+<span class="material-symbols-outlined">home_pin</span>
+<span class="font-body-lg text-body-lg">Cottage</span>
+</li>
+<li class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-white/5 cursor-pointer text-on-surface-variant opacity-60 hover:opacity-100 hover:translate-x-2 transition-all duration-500">
+<span class="material-symbols-outlined">visibility</span>
+<span class="font-body-lg text-body-lg">Observatory</span>
+</li>
+<li class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-white/5 cursor-pointer text-on-surface-variant opacity-60 hover:opacity-100 hover:translate-x-2 transition-all duration-500">
+<span class="material-symbols-outlined">park</span>
+<span class="font-body-lg text-body-lg">Ancient Tree</span>
+</li>
+<li class="flex items-center gap-4 px-4 py-3 rounded-xl bg-white/5 cursor-pointer text-tertiary drop-shadow-[0_0_8px_rgba(233,195,73,0.8)] transition-all duration-500">
+<span class="material-symbols-outlined">redeem</span>
+<span class="font-body-lg text-body-lg">Giant Present</span>
+</li>
+</ul>
+<div class="mt-auto pt-8">
+<button class="w-full py-4 rounded-full bg-gradient-to-r from-secondary-container to-surface-container border border-secondary/20 font-label-caps text-label-caps text-on-surface tracking-widest hover:shadow-[0_0_20px_rgba(210,187,255,0.4)] transition-all duration-300">
+                Begin the Journey
+            </button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 relative z-10 flex flex-col items-center justify-center p-margin-mobile md:pl-[380px] md:pr-margin-desktop min-h-screen">
+<!-- The Scene -->
+<div class="relative w-full max-w-4xl aspect-[16/9] md:aspect-[21/9] rounded-3xl overflow-hidden glass-panel flex items-center justify-center present-container z-20 shadow-[0_0_50px_rgba(233,195,73,0.1)]" id="scene-container">
+<!-- 3D Animation Placeholder -->
+<div class="absolute inset-0 z-10 w-full h-full pointer-events-none">
+<!-- STITCH_THREEJS_START:ANIMATION_11 class="absolute inset-0 w-full h-full" -->
+<div class="absolute inset-0 w-full h-full" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_11" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_11');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  (function() {
+  const container = document.getElementById('threejs-container') || document.body;
+  const width = container.clientWidth || window.innerWidth;
+  const height = container.clientHeight || window.innerHeight;
+  
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+  camera.position.set(0, 2, 8);
+  
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  container.appendChild(renderer.domElement);
+
+  // Lighting
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+  scene.add(ambientLight);
+  const spotLight = new THREE.SpotLight(0xffd700, 2);
+  spotLight.position.set(5, 10, 5);
+  scene.add(spotLight);
+
+  // The Present
+  const giftGroup = new THREE.Group();
+  
+  const boxGeo = new THREE.BoxGeometry(3, 3, 3);
+  const boxMat = new THREE.MeshStandardMaterial({ color: 0x4b0082 }); // Indigo
+  const box = new THREE.Mesh(boxGeo, boxMat);
+  giftGroup.add(box);
+
+  // Ribbon
+  const ribbonGeo = new THREE.BoxGeometry(3.1, 0.5, 3.1);
+  const ribbonMat = new THREE.MeshStandardMaterial({ color: 0xffd700 }); // Gold
+  const ribbonH = new THREE.Mesh(ribbonGeo, ribbonMat);
+  const ribbonV = new THREE.Mesh(ribbonGeo, ribbonMat);
+  ribbonV.rotation.y = Math.PI / 2;
+  giftGroup.add(ribbonH, ribbonV);
+
+  scene.add(giftGroup);
+
+  // Particles
+  const particleCount = 200;
+  const particles = new THREE.BufferGeometry();
+  const positions = new Float32Array(particleCount * 3);
+  const colors = new Float32Array(particleCount * 3);
+
+  for(let i=0; i<particleCount*3; i++) {
+    positions[i] = (Math.random() - 0.5) * 15;
+    colors[i] = Math.random();
+  }
+  particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  
+  const pMaterial = new THREE.PointsMaterial({ size: 0.1, vertexColors: true, transparent: true, opacity: 0.8 });
+  const points = new THREE.Points(particles, pMaterial);
+  scene.add(points);
+
+  function animate() {
+    requestAnimationFrame(animate);
+    giftGroup.rotation.y += 0.01;
+    giftGroup.position.y = Math.sin(Date.now() * 0.002) * 0.2;
+    points.rotation.y -= 0.002;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    const w = container.clientWidth || window.innerWidth;
+    const h = container.clientHeight || window.innerHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  });
+})();
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_11 -->
+</div>
+<!-- Overlay Content (Pre-click) -->
+<div class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-surface/40 backdrop-blur-sm transition-opacity duration-1000" id="pre-click-overlay">
+<span class="material-symbols-outlined text-6xl text-tertiary mb-6 animate-pulse" style="font-variation-settings: 'FILL' 1;">
+                    redeem
+                </span>
+<h1 class="font-display-story-mobile md:font-display-story text-display-story-mobile md:text-display-story text-on-surface text-center max-w-2xl px-4 glow-text">
+                    The Journey Concludes
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-4 opacity-80 text-center">
+                    Tap to open your final gift.
+                </p>
+</div>
+</div>
+<!-- The Reveal Message (Hidden initially) -->
+<div class="message-reveal absolute z-30 flex flex-col items-center justify-center w-full max-w-3xl pointer-events-none p-8" id="reveal-message">
+<div class="glass-panel p-12 rounded-3xl text-center shadow-[0_0_100px_rgba(233,195,73,0.2)] border border-tertiary/20">
+<h2 class="font-display-story-mobile md:font-display-story text-display-story-mobile md:text-display-story text-tertiary glow-text mb-6">
+                    Happy Birthday, Kim.
+                </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                    This world was built just for you. Every star, every path, every memory crafted with care to celebrate the magic you bring to the universe.
+                </p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex gap-gutter items-center px-8 py-4 rounded-full bg-surface-container-lowest/20 backdrop-blur-xl no-border flat transition-all duration-1000 ease-out">
+<a class="flex flex-col items-center justify-center text-outline p-4 opacity-40 hover:opacity-100 hover:scale-110 duration-500" href="#">
+<span class="material-symbols-outlined mb-1">flare</span>
+<span class="font-label-caps text-label-caps hidden">Ambience</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container/30 backdrop-blur-lg text-secondary rounded-full p-4 ring-1 ring-secondary/50 shadow-[0_0_20px_rgba(210,187,255,0.3)] hover:opacity-100 hover:scale-110 duration-500" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">auto_fix_high</span>
+<span class="font-label-caps text-label-caps hidden">Journey</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline p-4 opacity-40 hover:opacity-100 hover:scale-110 duration-500" href="#">
+<span class="material-symbols-outlined mb-1">auto_stories</span>
+<span class="font-label-caps text-label-caps hidden">Memories</span>
+</a>
+</nav>
+<script>
+        // Generate Starfield
+        const starfield = document.getElementById('starfield');
+        const numStars = 150;
+        
+        for (let i = 0; i < numStars; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            
+            // Random positioning
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            
+            // Random sizing
+            const size = Math.random() * 3;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            
+            // Random animation duration and delay
+            star.style.setProperty('--duration', `${2 + Math.random() * 4}s`);
+            star.style.animationDelay = `${Math.random() * 2}s`;
+            
+            // Color variations (white, slight cyan, slight yellow)
+            const colors = ['#ffffff', '#dde2f9', '#ffe088'];
+            star.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            starfield.appendChild(star);
+        }
+
+        // Interaction Logic
+        const sceneContainer = document.getElementById('scene-container');
+        const preClickOverlay = document.getElementById('pre-click-overlay');
+        const revealMessage = document.getElementById('reveal-message');
+        let isOpened = false;
+
+        sceneContainer.addEventListener('click', (e) => {
+            if(isOpened) return;
+            isOpened = true;
+
+            // Fade out the overlay prompt
+            preClickOverlay.classList.add('fade-out');
+
+            // Trigger Fireworks
+            createFireworks(e.clientX, e.clientY);
+            
+            // Show Message after delay
+            setTimeout(() => {
+                revealMessage.classList.add('active');
+            }, 1000);
+        });
+
+        function createFireworks(x, y) {
+            const colors = ['#e9c349', '#ffe088', '#ffffff']; // Tertiary, Gold, White
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('firework');
+                document.body.appendChild(particle);
+
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = 100 + Math.random() * 200;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity;
+                
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+                particle.animate([
+                    { transform: `translate(0, 0) scale(1)`, opacity: 1 },
+                    { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+                ], {
+                    duration: 1000 + Math.random() * 1000,
+                    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    fill: 'forwards'
+                });
+
+                setTimeout(() => particle.remove(), 2000);
+            }
+        }
+    </script>
+</body></html>

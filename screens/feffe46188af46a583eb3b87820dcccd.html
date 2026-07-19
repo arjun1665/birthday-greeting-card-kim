@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Star Lake - Kim's Birthday Adventure</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "surface-tint": "#c1c6dc",
+                            "outline": "#909097",
+                            "on-primary-fixed": "#151b2c",
+                            "surface-dim": "#121414",
+                            "on-secondary-fixed": "#25005a",
+                            "on-primary-container": "#777c91",
+                            "on-secondary-fixed-variant": "#543098",
+                            "on-background": "#e2e2e2",
+                            "inverse-surface": "#e2e2e2",
+                            "surface-variant": "#333535",
+                            "on-tertiary-container": "#987a00",
+                            "surface-container-low": "#1a1c1c",
+                            "surface-container-lowest": "#0c0f0f",
+                            "error": "#ffb4ab",
+                            "secondary-fixed-dim": "#d2bbff",
+                            "on-tertiary-fixed": "#241a00",
+                            "on-tertiary-fixed-variant": "#574500",
+                            "primary-fixed-dim": "#c1c6dc",
+                            "inverse-on-surface": "#2f3131",
+                            "surface-container": "#1e2020",
+                            "secondary-fixed": "#eaddff",
+                            "on-surface": "#e2e2e2",
+                            "on-surface-variant": "#c6c6cd",
+                            "inverse-primary": "#585e71",
+                            "secondary": "#d2bbff",
+                            "on-primary-fixed-variant": "#414659",
+                            "on-primary": "#2a3041",
+                            "tertiary": "#e9c349",
+                            "surface-bright": "#38393a",
+                            "outline-variant": "#45464c",
+                            "primary-container": "#0b1121",
+                            "surface-container-high": "#282a2b",
+                            "on-secondary-container": "#c6aaff",
+                            "primary-fixed": "#dde2f9",
+                            "tertiary-container": "#181100",
+                            "tertiary-fixed-dim": "#e9c349",
+                            "primary": "#c1c6dc",
+                            "tertiary-fixed": "#ffe088",
+                            "surface": "#121414",
+                            "secondary-container": "#56329b",
+                            "on-secondary": "#3d1281",
+                            "background": "#121414",
+                            "on-error-container": "#ffdad6",
+                            "on-tertiary": "#3c2f00",
+                            "surface-container-highest": "#333535",
+                            "error-container": "#93000a",
+                            "on-error": "#690005"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                    },
+                    "spacing": {
+                            "margin-mobile": "20px",
+                            "unit": "8px",
+                            "gutter": "24px",
+                            "container-max": "1200px",
+                            "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                            "label-caps": [
+                                    "Space Grotesk"
+                            ],
+                            "display-story-mobile": [
+                                    "Playfair Display"
+                            ],
+                            "headline-md": [
+                                    "Playfair Display"
+                            ],
+                            "body-lg": [
+                                    "DM Sans"
+                            ],
+                            "display-story": [
+                                    "Playfair Display"
+                            ],
+                            "body-md": [
+                                    "DM Sans"
+                            ]
+                    },
+                    "fontSize": {
+                            "label-caps": [
+                                    "12px",
+                                    {
+                                            "lineHeight": "1",
+                                            "letterSpacing": "0.1em",
+                                            "fontWeight": "500"
+                                    }
+                            ],
+                            "display-story-mobile": [
+                                    "32px",
+                                    {
+                                            "lineHeight": "1.2",
+                                            "fontWeight": "700"
+                                    }
+                            ],
+                            "headline-md": [
+                                    "24px",
+                                    {
+                                            "lineHeight": "1.4",
+                                            "fontWeight": "500"
+                                    }
+                            ],
+                            "body-lg": [
+                                    "18px",
+                                    {
+                                            "lineHeight": "1.6",
+                                            "fontWeight": "400"
+                                    }
+                            ],
+                            "display-story": [
+                                    "48px",
+                                    {
+                                            "lineHeight": "1.2",
+                                            "letterSpacing": "-0.02em",
+                                            "fontWeight": "700"
+                                    }
+                            ],
+                            "body-md": [
+                                    "16px",
+                                    {
+                                            "lineHeight": "1.6",
+                                            "fontWeight": "400"
+                                    }
+                            ]
+                    }
+            },
+                },
+        }
+    </script>
+<style>
+        .star-fly-animation {
+            position: absolute;
+            pointer-events: none;
+            z-index: 100;
+            color: #ffe088; /* tertiary-fixed */
+            font-size: 24px;
+            filter: drop-shadow(0 0 8px rgba(233, 195, 73, 0.8));
+            transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        @keyframes gentle-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .floating-element {
+            animation: gentle-float 6s ease-in-out infinite;
+        }
+
+        .glass-panel {
+            background: rgba(18, 20, 20, 0.4);
+            backdrop-filter: blur(12px);
+            border: 0.5px solid rgba(226, 226, 226, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background overflow-hidden w-screen h-screen m-0 p-0 selection:bg-tertiary-fixed-dim/30">
+<!-- Background Shader Layer -->
+<div class="fixed inset-0 z-0">
+<!-- STITCH_SHADER_START:ANIMATION_16 class="absolute inset-0 w-full h-full" -->
+<div class="absolute inset-0 w-full h-full" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_16" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_16');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+varying vec2 v_texCoord;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+float hash(vec2 p) {
+    p = fract(p * vec2(123.34, 456.21));
+    p += dot(p, p + 45.32);
+    return fract(p.x * p.y);
+}
+
+float noise(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    f = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x),
+               mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
+}
+
+void main() {
+    vec2 uv = v_texCoord;
+    vec2 p = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.y, u_resolution.x);
+    
+    // Deep water colors
+    vec3 color1 = vec3(0.02, 0.05, 0.12); // Midnight blue
+    vec3 color2 = vec3(0.05, 0.1, 0.2);  // Soft cyan reflection
+    
+    float n = noise(p * 2.0 + u_time * 0.1);
+    float ripples = sin(p.x * 10.0 + n * 5.0 + u_time) * 0.5 + 0.5;
+    ripples *= sin(p.y * 8.0 - u_time * 0.5) * 0.5 + 0.5;
+    
+    vec3 finalColor = mix(color1, color2, ripples * 0.3);
+    
+    // Twinkling reflections
+    float stars = pow(hash(p + u_time * 0.001), 100.0) * 0.8;
+    finalColor += stars * vec3(0.8, 0.9, 1.0);
+    
+    // Vignette
+    float d = length(uv - 0.5);
+    finalColor *= smoothstep(0.8, 0.2, d);
+
+    gl_FragColor = vec4(finalColor, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_16 -->
+<!-- Overlay to ensure text readability -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dim via-transparent to-surface-dim/50 pointer-events-none"></div>
+</div>
+<!-- Foreground 3D Scene Layer (Boats) -->
+<div class="fixed inset-0 z-10 pointer-events-none" id="scene-container">
+<!-- The threejs scene handles the boats. We make it pointer-events-none here to let clicks pass through to our invisible overlay zones, or if the scene supports internal raycasting, it would handle it. For this implementation, we will simulate the interaction via invisible DOM overlays placed by JS. -->
+<!-- STITCH_THREEJS_START:ANIMATION_15 class="absolute inset-0 w-full h-full pointer-events-auto" -->
+<div class="absolute inset-0 w-full h-full pointer-events-auto" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_15" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_15');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  (function() {
+  const width = container.clientWidth || window.innerWidth;
+  const height = container.clientHeight || window.innerHeight;
+  
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+  camera.position.set(0, 5, 15);
+  camera.lookAt(0, 0, 0);
+  
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  container.appendChild(renderer.domElement);
+
+  // Lighting
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+  scene.add(ambientLight);
+  const pointLight = new THREE.PointLight(0xffd700, 1, 50);
+  pointLight.position.set(0, 10, 0);
+  scene.add(pointLight);
+
+  // Floating Boats
+  const boatGroup = new THREE.Group();
+  const boatCount = 5;
+  
+  function createBoat() {
+    const group = new THREE.Group();
+    // Simple Paper Boat
+    const bodyGeo = new THREE.ConeGeometry(0.5, 1, 4);
+    const bodyMat = new THREE.MeshStandardMaterial({ color: 0xffffff, flatShading: true });
+    const body = new THREE.Mesh(bodyGeo, bodyMat);
+    body.rotation.x = Math.PI;
+    body.scale.set(1, 0.5, 2);
+    group.add(body);
+    
+    // Lantern on boat
+    const lanternGeo = new THREE.SphereGeometry(0.15, 8, 8);
+    const lanternMat = new THREE.MeshBasicMaterial({ color: 0xffd700 });
+    const lantern = new THREE.Mesh(lanternGeo, lanternMat);
+    lantern.position.y = 0.5;
+    group.add(lantern);
+    
+    return group;
+  }
+
+  for(let i=0; i<boatCount; i++) {
+    const boat = createBoat();
+    boat.position.set((Math.random()-0.5)*10, 0, (Math.random()-0.5)*10);
+    boat.userData = { 
+      speed: 0.005 + Math.random()*0.01,
+      phase: Math.random()*Math.PI*2,
+      rotSpeed: (Math.random()-0.5)*0.01
+    };
+    boatGroup.add(boat);
+  }
+  scene.add(boatGroup);
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const time = Date.now() * 0.001;
+    
+    boatGroup.children.forEach(b => {
+      b.position.y = Math.sin(time + b.userData.phase) * 0.1;
+      b.rotation.z = Math.sin(time * 0.5 + b.userData.phase) * 0.05;
+      b.position.x += Math.cos(time * 0.2 + b.userData.phase) * 0.01;
+      b.rotation.y += b.userData.rotSpeed;
+    });
+    
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    const w = container.clientWidth || window.innerWidth;
+    const h = container.clientHeight || window.innerHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  });
+})();
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_15 -->
+</div>
+<!-- UI Layer -->
+<div class="relative z-20 w-full h-full flex flex-col pointer-events-none">
+<!-- Header / HUD -->
+<header class="w-full flex justify-between items-start p-margin-mobile md:p-margin-desktop pointer-events-auto">
+<!-- Back Button -->
+<button class="flex items-center gap-2 px-4 py-2 rounded-full glass-panel hover:bg-white/5 transition-colors duration-300 group">
+<span class="material-symbols-outlined text-outline group-hover:text-tertiary-fixed transition-colors">arrow_back</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant group-hover:text-on-surface">Back to Island</span>
+</button>
+<!-- Star Collection HUD -->
+<div class="flex items-center gap-3 px-6 py-3 rounded-full glass-panel shadow-[0_0_20px_rgba(233,195,73,0.1)] relative" id="star-hud">
+<span class="material-symbols-outlined text-tertiary-fixed-dim drop-shadow-[0_0_8px_rgba(233,195,73,0.6)]" style="font-variation-settings: 'FILL' 1;">stars</span>
+<div class="flex items-baseline gap-1">
+<span class="font-display-story text-headline-md text-tertiary-fixed" id="star-count">0</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">/5</span>
+</div>
+<!-- Inner glow effect -->
+<div class="absolute inset-0 rounded-full shadow-[inset_0_0_10px_rgba(233,195,73,0.2)] pointer-events-none"></div>
+</div>
+</header>
+<!-- Main Content Area (Narrative) -->
+<main class="flex-grow flex flex-col items-center justify-center text-center px-gutter pointer-events-none">
+<div class="glass-panel p-8 md:p-12 rounded-[32px] max-w-2xl floating-element">
+<h1 class="font-display-story text-display-story-mobile md:text-display-story text-on-surface mb-4 tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+                    Star-filled Reflections
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md mx-auto leading-relaxed">
+                    Touch the floating memories to gather the starlight.
+                </p>
+</div>
+</main>
+<!-- Simulated interactive boat zones (since we can't easily hook into the ThreeJS scene's internal objects directly without script access to it, we'll overlay invisible clickable zones for demonstration of the effect requested) -->
+<div class="absolute inset-0 pointer-events-auto z-10" id="interactive-overlay" style="opacity: 0;">
+<!-- These are dummy positions. In a real scenario, the 3D scene would dispatch events. -->
+<button class="boat-hitbox absolute bottom-1/4 left-1/4 w-32 h-32 rounded-full cursor-pointer" data-collected="false"></button>
+<button class="boat-hitbox absolute bottom-1/3 right-1/3 w-32 h-32 rounded-full cursor-pointer" data-collected="false"></button>
+<button class="boat-hitbox absolute top-1/2 left-1/2 w-32 h-32 rounded-full cursor-pointer" data-collected="false"></button>
+<button class="boat-hitbox absolute top-1/3 left-1/4 w-32 h-32 rounded-full cursor-pointer" data-collected="false"></button>
+<button class="boat-hitbox absolute bottom-1/4 right-1/4 w-32 h-32 rounded-full cursor-pointer" data-collected="false"></button>
+</div>
+<!-- Shared Component: BottomNavBar (Filtered out per rules: Contextual State & Identity -> Intent Fallback -> No exact match for these linear/focused interaction screens, prioritizing canvas) -->
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const maxStars = 5;
+            let currentStars = 0;
+            const starCountEl = document.getElementById('star-count');
+            const hudEl = document.getElementById('star-hud');
+            const hitboxes = document.querySelectorAll('.boat-hitbox');
+
+            hitboxes.forEach(hitbox => {
+                hitbox.addEventListener('click', (e) => {
+                    if (hitbox.dataset.collected === "true" || currentStars >= maxStars) return;
+                    
+                    hitbox.dataset.collected = "true";
+                    
+                    // Create flying star
+                    const star = document.createElement('span');
+                    star.className = 'material-symbols-outlined star-fly-animation';
+                    star.style.fontVariationSettings = "'FILL' 1";
+                    star.textContent = 'stars';
+                    
+                    // Start position (click coordinates)
+                    const startX = e.clientX;
+                    const startY = e.clientY;
+                    
+                    star.style.left = `${startX}px`;
+                    star.style.top = `${startY}px`;
+                    
+                    document.body.appendChild(star);
+                    
+                    // Force reflow
+                    star.getBoundingClientRect();
+                    
+                    // End position (HUD center)
+                    const hudRect = hudEl.getBoundingClientRect();
+                    const endX = hudRect.left + (hudRect.width / 2);
+                    const endY = hudRect.top + (hudRect.height / 2);
+                    
+                    // Animate
+                    requestAnimationFrame(() => {
+                        star.style.transform = `translate(${endX - startX}px, ${endY - startY}px) scale(0.5) rotate(360deg)`;
+                        star.style.opacity = '0';
+                    });
+                    
+                    // Update counter and cleanup
+                    setTimeout(() => {
+                        star.remove();
+                        currentStars++;
+                        starCountEl.textContent = currentStars;
+                        
+                        // HUD pulse effect
+                        hudEl.classList.add('scale-110', 'bg-tertiary-fixed/10');
+                        setTimeout(() => {
+                            hudEl.classList.remove('scale-110', 'bg-tertiary-fixed/10');
+                        }, 200);
+
+                        if (currentStars === maxStars) {
+                            // Completion effect
+                            setTimeout(() => {
+                                alert("All starlight gathered. A new constellation is born.");
+                            }, 500);
+                        }
+                    }, 1000); // match transition duration
+                });
+            });
+        });
+    </script>
+</body></html>
