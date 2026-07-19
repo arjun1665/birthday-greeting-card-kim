@@ -1,0 +1,26 @@
+{
+  "name": "Happy Birthday Kim",
+  "short_name": "Happy Birthday Kim",
+  "description": "A little universe built just for Kim.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#121414",
+  "theme_color": "#121414",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,12 +1,52 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Providers } from "@/components/Providers";
+import LoadingScreen from "@/components/LoadingScreen";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Astra for Kim — Celestial Odyssey",
-  description:
-    "A dreamy birthday adventure through floating realms, starlit constellations, and hidden gifts — crafted with love for Kim.",
+  metadataBase: new URL("https://happy-birthday.kim"),
+  title: {
+    default: "Someone has something for you...",
+    template: "%s | Happy Birthday, Kim 🎂",
+  },
+  description: "A little universe built just for Kim.",
+  applicationName: "Happy Birthday Kim",
+  keywords: ["birthday", "Kim", "gift", "celebration", "celestial", "starfield", "universe"],
+  authors: [{ name: "Your LOVELY IDIOT", url: "https://happy-birthday.kim" }],
+  creator: "Your LOVELY IDIOT",
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Happy Birthday, Kim 🎂",
+    description: "A little universe built just for you.",
+    url: "https://happy-birthday.kim",
+    siteName: "Happy Birthday Kim",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Happy Birthday, Kim 🎂",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Happy Birthday, Kim 🎂",
+    description: "A little universe built just for you.",
+    images: ["/og-image.png"],
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
 };
 
 export const viewport: Viewport = {
@@ -33,7 +73,8 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="h-full overflow-hidden flex flex-col">
+      <body className="h-full overflow-hidden flex flex-col bg-background text-on-surface">
+        <LoadingScreen />
         <Providers>{children}</Providers>
         <Script
           src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"
