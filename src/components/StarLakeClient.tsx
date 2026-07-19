@@ -14,45 +14,45 @@ const LAKE_MEMORIES: {
   /** Drop files into /public/memories/ using these paths */
   src: string;
 }[] = [
-  {
-    type: "photo",
-    title: "A Quiet Evening",
-    caption: "A soft memory waiting for its photo.",
-    src: "/memories/photo-1.jpg",
-  },
-  {
-    type: "audio",
-    title: "Shared Laughter",
-    caption: "A voice note saved like starlight — press play when ready.",
-    src: "/memories/audio-1.mp3",
-  },
-  {
-    type: "photo",
-    title: "Warm Light",
-    caption: "A favorite picture together.",
-    src: "/memories/photo-2.jpg",
-  },
-  {
-    type: "audio",
-    title: "Tiny Adventures",
-    caption: "A little soundtrack from the journey — press play when ready.",
-    src: "/memories/audio-2.mp3",
-  },
-  {
-    type: "photo",
-    title: "Star Lake Wish",
-    caption: "One last reflection to hold forever.",
-    src: "/memories/photo-3.jpg",
-  },
-];
+    {
+      type: "photo",
+      title: "A Calm Chaos",
+      caption: "Frankly one of the first ever photo to have a place in my gallery.",
+      src: "/memories/photo-1.jpg",
+    },
+    {
+      type: "audio",
+      title: "Feeble singing",
+      caption: "Even your quietest melodies have a way of finding their way into people's hearts.",
+      src: "/memories/audio-1.mp3",
+    },
+    {
+      type: "photo",
+      title: "kissy kisses",
+      caption: "Somehow, even through a picture, your kiss carries a little magic.",
+      src: "/memories/photo-2.jpg",
+    },
+    {
+      type: "audio",
+      title: "Lullaby",
+      caption: "Lullaby at 3am first, later took me whole year to realise the pain in the lyrics.",
+      src: "/memories/audio-2.mp3",
+    },
+    {
+      type: "photo",
+      title: "Star Lake Wish",
+      caption: "Seems like a little piece of heaven that found its way to Earth.",
+      src: "/memories/photo-3.jpg",
+    },
+  ];
 
 export default function StarLakeClient() {
   useRealmGate("lake");
   const { ready, progress, setLakeStars } = useProgress();
   const threeContainerRef = useRef<HTMLDivElement>(null);
-  
+
   const [starsCollected, setStarsCollected] = useState(0);
-  const [starPositions, setStarPositions] = useState<{id: number, startX: number, startY: number, endX: number, endY: number}[]>([]);
+  const [starPositions, setStarPositions] = useState<{ id: number, startX: number, startY: number, endX: number, endY: number }[]>([]);
   const [panelVisible, setPanelVisible] = useState(false);
   const [memoryIndex, setMemoryIndex] = useState(0);
   const [photoFailed, setPhotoFailed] = useState(false);
@@ -118,7 +118,7 @@ export default function StarLakeClient() {
   useEffect(() => {
     const container = threeContainerRef.current;
     if (!container || !(window as any).THREE) return;
-    
+
     const THREE = (window as any).THREE;
     const scene = new THREE.Scene();
     const width = container.clientWidth || window.innerWidth;
@@ -126,11 +126,11 @@ export default function StarLakeClient() {
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
     camera.position.set(0, 5, 15);
     camera.lookAt(0, 0, 0);
-    
+
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-    
+
     while (container.firstChild) {
       container.removeChild(container.firstChild);
     }
@@ -144,7 +144,7 @@ export default function StarLakeClient() {
 
     const boatGroup = new THREE.Group();
     const boatCount = 5;
-    
+
     function createBoat() {
       const group = new THREE.Group();
       const bodyGeo = new THREE.ConeGeometry(0.5, 1, 4);
@@ -153,23 +153,23 @@ export default function StarLakeClient() {
       body.rotation.x = Math.PI;
       body.scale.set(1, 0.5, 2);
       group.add(body);
-      
+
       const lanternGeo = new THREE.SphereGeometry(0.15, 8, 8);
       const lanternMat = new THREE.MeshBasicMaterial({ color: 0xffd700 });
       const lantern = new THREE.Mesh(lanternGeo, lanternMat);
       lantern.position.y = 0.5;
       group.add(lantern);
-      
+
       return group;
     }
 
-    for(let i=0; i<boatCount; i++) {
+    for (let i = 0; i < boatCount; i++) {
       const boat = createBoat();
-      boat.position.set((Math.random()-0.5)*10, 0, (Math.random()-0.5)*10);
-      boat.userData = { 
-        speed: 0.005 + Math.random()*0.01,
-        phase: Math.random()*Math.PI*2,
-        rotSpeed: (Math.random()-0.5)*0.01
+      boat.position.set((Math.random() - 0.5) * 10, 0, (Math.random() - 0.5) * 10);
+      boat.userData = {
+        speed: 0.005 + Math.random() * 0.01,
+        phase: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.01
       };
       // Invisible touch helper for phones
       const hit = new THREE.Mesh(
@@ -249,14 +249,14 @@ export default function StarLakeClient() {
     function animate() {
       animationFrameId = requestAnimationFrame(animate);
       const time = Date.now() * 0.001;
-      
+
       boatGroup.children.forEach((b: any) => {
         b.position.y = Math.sin(time + b.userData.phase) * 0.1;
         b.rotation.z = Math.sin(time * 0.5 + b.userData.phase) * 0.05;
         b.position.x += Math.cos(time * 0.2 + b.userData.phase) * 0.01;
         b.rotation.y += b.userData.rotSpeed;
       });
-      
+
       renderer.render(scene, camera);
     }
     animate();
@@ -293,33 +293,33 @@ export default function StarLakeClient() {
 
   const handleBoatClick = (clientX: number, clientY: number) => {
     if (starsCollected >= maxStars) return;
-    
+
     const hudEl = document.getElementById('star-hud');
     if (!hudEl) return;
-    
+
     const startX = clientX;
     const startY = clientY;
-    
+
     const hudRect = hudEl.getBoundingClientRect();
     const endX = hudRect.left + (hudRect.width / 2);
     const endY = hudRect.top + (hudRect.height / 2);
-    
+
     const id = starIdCounter.current++;
     const nextMemory = Math.min(starsCollected, LAKE_MEMORIES.length - 1);
     setMemoryIndex(nextMemory);
     setPanelVisible(true);
     setStarPositions(prev => [...prev, { id, startX, startY, endX, endY }]);
-    
+
     setTimeout(() => {
       const next = Math.min(starsRef.current + 1, maxStars);
       starsRef.current = next;
       setStarsCollected(next);
       setLakeStarsRef.current(next);
       setStarPositions(prev => prev.filter(p => p.id !== id));
-      
+
       hudEl.classList.add('scale-110', 'bg-tertiary-fixed/10');
       setTimeout(() => {
-          hudEl.classList.remove('scale-110', 'bg-tertiary-fixed/10');
+        hudEl.classList.remove('scale-110', 'bg-tertiary-fixed/10');
       }, 200);
     }, 1000);
   };
@@ -346,7 +346,7 @@ export default function StarLakeClient() {
 
       {/* UI Layer */}
       <div className="relative z-20 w-full h-full flex flex-col pointer-events-none">
-        
+
         <header className="w-full flex items-start justify-between gap-2 p-margin-mobile md:p-margin-desktop pt-[max(1.25rem,var(--safe-top))] px-[max(1rem,var(--safe-left))] pr-[max(1rem,var(--safe-right))] pointer-events-auto">
           <BackToIsland className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-full glass-panel hover:bg-white/5 transition-colors duration-300 text-on-surface-variant hover:text-on-surface" />
           <ContinueButton
@@ -354,21 +354,21 @@ export default function StarLakeClient() {
             className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-full glass-panel hover:bg-white/5 transition-colors duration-300 text-on-surface-variant hover:text-on-surface"
           />
         </header>
-        
+
         <main className="flex-grow flex flex-col items-center justify-start sm:justify-center text-center px-gutter pt-2 sm:pt-0 pointer-events-none">
           <div className="lake-title-panel p-4 sm:p-8 md:p-12 rounded-2xl sm:rounded-[32px] max-w-2xl floating-element border border-white/10">
             <h1 className="font-display-story text-[clamp(1.5rem,5vw,48px)] text-on-surface mb-2 sm:mb-4 tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
-                Star-filled Reflections
+              Star-filled Reflections
             </h1>
             <p className="font-body-lg text-[14px] sm:text-[18px] text-on-surface-variant max-w-md mx-auto leading-relaxed">
-                Touch the floating memories to gather the starlight.
+              Touch the floating memories to gather the starlight.
             </p>
           </div>
         </main>
 
         <footer className="w-full flex justify-center items-center p-margin-mobile md:p-margin-desktop pb-[max(1rem,var(--safe-bottom))] pointer-events-auto">
           <div className="flex items-center gap-3 px-6 py-3 rounded-full glass-panel shadow-[0_0_20px_rgba(233,195,73,0.1)] relative transition-all duration-200" id="star-hud">
-            <span className="material-symbols-outlined text-tertiary-fixed-dim drop-shadow-[0_0_8px_rgba(233,195,73,0.6)]" style={{fontVariationSettings: "'FILL' 1"}}>stars</span>
+            <span className="material-symbols-outlined text-tertiary-fixed-dim drop-shadow-[0_0_8px_rgba(233,195,73,0.6)]" style={{ fontVariationSettings: "'FILL' 1" }}>stars</span>
             <div className="flex items-baseline gap-1">
               <span className="font-display-story text-[24px] text-tertiary-fixed">{starsCollected}</span>
               <span className="font-label-caps text-[12px] text-on-surface-variant">/5</span>
@@ -380,11 +380,10 @@ export default function StarLakeClient() {
 
       {/* Memory panel — 3 photos + 2 audio */}
       <div
-        className={`fixed bottom-[max(5.5rem,calc(var(--safe-bottom)+4.5rem))] left-1/2 -translate-x-1/2 z-40 w-full max-w-[min(400px,94vw)] px-3 transition-all duration-700 ${
-          panelVisible
+        className={`fixed bottom-[max(5.5rem,calc(var(--safe-bottom)+4.5rem))] left-1/2 -translate-x-1/2 z-40 w-full max-w-[min(400px,94vw)] px-3 transition-all duration-700 ${panelVisible
             ? "opacity-100 pointer-events-auto translate-y-0"
             : "opacity-0 pointer-events-none translate-y-5"
-        }`}
+          }`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="memory-title"
@@ -490,8 +489,8 @@ export default function StarLakeClient() {
 
       {/* Star Flying Animations */}
       {starPositions.map(star => (
-        <span 
-          key={star.id} 
+        <span
+          key={star.id}
           className="material-symbols-outlined star-fly-animation"
           style={{
             left: star.startX,

@@ -162,7 +162,7 @@ export default function ObservatoryClient() {
     <div className="text-on-background fixed inset-0 dark overflow-hidden selection:bg-secondary-container selection:text-on-secondary-container bg-[#050814]">
       {/* Wide sky map — pans horizontally on portrait so Libra stays reachable */}
       <div
-        className="fixed inset-0 z-0 overflow-x-auto overflow-y-hidden overscroll-x-contain touch-pan-x"
+        className="fixed inset-0 z-0 overflow-x-auto overflow-y-hidden overscroll-x-contain touch-pan-x hide-scrollbar"
         style={{ WebkitOverflowScrolling: "touch" }}
       >
         <div
@@ -324,13 +324,23 @@ export default function ObservatoryClient() {
           );
           box-shadow: 0 0 10px rgba(255, 255, 255, 0.55);
           opacity: 0.55;
-          transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+          transition: opacity 0.25s ease, box-shadow 0.25s ease;
         }
         .obs-star:hover,
         .obs-star:focus-visible {
           opacity: 1;
-          transform: translate(-50%, -50%) scale(1.35);
           box-shadow: 0 0 16px rgba(233, 195, 73, 0.85);
+        }
+        .obs-star::after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          background: transparent;
         }
         .obs-star-accent {
           background: radial-gradient(
@@ -348,7 +358,6 @@ export default function ObservatoryClient() {
         }
         .obs-star-pulse {
           opacity: 1 !important;
-          transform: translate(-50%, -50%) scale(1.8) !important;
           box-shadow: 0 0 22px rgba(255, 224, 136, 1) !important;
         }
         .star-dust {
@@ -395,6 +404,13 @@ export default function ObservatoryClient() {
           stroke-width: 2;
           stroke-dasharray: none;
           filter: drop-shadow(0 0 3px rgba(233, 195, 73, 0.6));
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
         }
       `}</style>
     </div>

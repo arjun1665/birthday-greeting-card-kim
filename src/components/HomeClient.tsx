@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useProgress } from "@/components/ProgressProvider";
@@ -16,47 +17,47 @@ const DESTINATIONS: {
   position: string;
   delayClass: string;
 }[] = [
-  {
-    id: "cottage",
-    href: REALM_PATHS.cottage,
-    label: "Cottage",
-    icon: "home_pin",
-    position: "top-[30%] left-[16%] sm:top-[32%] sm:left-[26%] md:left-[32%]",
-    delayClass: "float",
-  },
-  {
-    id: "observatory",
-    href: REALM_PATHS.observatory,
-    label: "Observatory",
-    icon: "visibility",
-    position: "top-[20%] right-[14%] sm:top-[22%] sm:right-[26%] md:right-[32%]",
-    delayClass: "float-delayed-1",
-  },
-  {
-    id: "tree",
-    href: REALM_PATHS.tree,
-    label: "Ancient Tree",
-    icon: "park",
-    position: "bottom-[30%] left-[12%] sm:bottom-[34%] sm:left-[22%] md:left-[28%]",
-    delayClass: "float-delayed-2",
-  },
-  {
-    id: "lake",
-    href: REALM_PATHS.lake,
-    label: "Star Lake",
-    icon: "water",
-    position: "top-[54%] right-[12%] sm:top-[52%] sm:right-[20%] md:right-[24%]",
-    delayClass: "float-delayed-3",
-  },
-  {
-    id: "finale",
-    href: REALM_PATHS.finale,
-    label: "Giant Present",
-    icon: "redeem",
-    position: "bottom-[22%] right-[16%] sm:bottom-[26%] sm:right-[22%] md:right-[28%]",
-    delayClass: "float-delayed-3",
-  },
-];
+    {
+      id: "cottage",
+      href: REALM_PATHS.cottage,
+      label: "Cottage",
+      icon: "home_pin",
+      position: "top-[30%] left-[16%] sm:top-[32%] sm:left-[26%] md:left-[32%]",
+      delayClass: "float",
+    },
+    {
+      id: "observatory",
+      href: REALM_PATHS.observatory,
+      label: "Observatory",
+      icon: "visibility",
+      position: "top-[20%] right-[14%] sm:top-[22%] sm:right-[26%] md:right-[32%]",
+      delayClass: "float-delayed-1",
+    },
+    {
+      id: "tree",
+      href: REALM_PATHS.tree,
+      label: "Ancient Tree",
+      icon: "park",
+      position: "bottom-[30%] left-[12%] sm:bottom-[34%] sm:left-[22%] md:left-[28%]",
+      delayClass: "float-delayed-2",
+    },
+    {
+      id: "lake",
+      href: REALM_PATHS.lake,
+      label: "Star Lake",
+      icon: "water",
+      position: "top-[54%] right-[12%] sm:top-[52%] sm:right-[20%] md:right-[24%]",
+      delayClass: "float-delayed-3",
+    },
+    {
+      id: "finale",
+      href: REALM_PATHS.finale,
+      label: "Giant Present",
+      icon: "redeem",
+      position: "bottom-[22%] right-[16%] sm:bottom-[26%] sm:right-[22%] md:right-[28%]",
+      delayClass: "float-delayed-3",
+    },
+  ];
 
 /**
  * Milestone labels shown below the island as a hint strip.
@@ -73,6 +74,8 @@ const STAGE_HINTS: Record<number, string> = {
 
 export default function HomeClient() {
   const [activeScreen, setActiveScreen] = useState(1);
+  const [rosePopupOpen, setRosePopupOpen] = useState(false);
+  const [gardenNotifDismissed, setGardenNotifDismissed] = useState(false);
   const shaderCanvasRef = useRef<HTMLCanvasElement>(null);
   const threeContainerRef = useRef<HTMLDivElement>(null);
   const { ready, progress, isUnlocked, isComplete } = useProgress();
@@ -83,14 +86,14 @@ export default function HomeClient() {
     ? progress.finaleComplete
       ? 5
       : progress.lakeComplete
-      ? 4
-      : progress.treeComplete
-      ? 3
-      : progress.observatoryFound.length > 0
-      ? 2
-      : progress.cottageComplete
-      ? 1
-      : 0
+        ? 4
+        : progress.treeComplete
+          ? 3
+          : progress.observatoryFound.length > 0
+            ? 2
+            : progress.cottageComplete
+              ? 1
+              : 0
     : 0;
 
   const journeyComplete = bloomStage === 5;
@@ -308,13 +311,13 @@ void main() {
     // ── Helper: build a closed bud ──
     function makeBud(scale = 1): any {
       const group = new THREE.Group();
-      const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.035, 0.4, 5), stemMat);
-      stem.position.y = 0.2;
+      const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.035, 0.9, 5), stemMat);
+      stem.position.y = 0.45;
       group.add(stem);
-      addLeaves(group, 0.4);
+      addLeaves(group, 0.9);
       const bud = new THREE.Mesh(new THREE.SphereGeometry(0.09, 7, 7), budMat);
       bud.scale.set(1, 1.4, 1);
-      bud.position.y = 0.46;
+      bud.position.y = 0.96;
       group.add(bud);
       group.scale.setScalar(scale);
       return group;
@@ -323,21 +326,22 @@ void main() {
     // ── Helper: build a half-open rose ──
     function makeHalfRose(scale = 1): any {
       const group = new THREE.Group();
-      const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.035, 0.38, 5), stemMat);
-      stem.position.y = 0.19;
+      group.userData.popupRose = true;
+      const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.035, 0.88, 5), stemMat);
+      stem.position.y = 0.44;
       group.add(stem);
-      addLeaves(group, 0.38);
+      addLeaves(group, 0.88);
       // Outer petals only (spread less than full rose)
       for (let p = 0; p < 5; p++) {
         const petal = new THREE.Mesh(new THREE.SphereGeometry(0.1, 6, 6), petalMat);
         const angle = (p / 5) * Math.PI * 2;
         petal.scale.set(1, 0.5, 0.75);
-        petal.position.set(Math.cos(angle) * 0.07, 0.42, Math.sin(angle) * 0.07);
+        petal.position.set(Math.cos(angle) * 0.07, 0.92, Math.sin(angle) * 0.07);
         petal.rotation.y = angle;
         group.add(petal);
       }
       const center = new THREE.Mesh(new THREE.SphereGeometry(0.07, 7, 7), centerMat);
-      center.position.y = 0.46;
+      center.position.y = 0.96;
       group.add(center);
       group.scale.setScalar(scale);
       return group;
@@ -346,16 +350,17 @@ void main() {
     // ── Helper: build a fully bloomed rose ──
     function makeFullRose(scale = 1): any {
       const group = new THREE.Group();
-      const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.03, 0.38, 5), stemMat);
-      stem.position.y = 0.19;
+      group.userData.popupRose = true;
+      const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.03, 0.88, 5), stemMat);
+      stem.position.y = 0.44;
       group.add(stem);
-      addLeaves(group, 0.38);
+      addLeaves(group, 0.88);
       // Outer ring of 7 petals
       for (let p = 0; p < 7; p++) {
         const petal = new THREE.Mesh(new THREE.SphereGeometry(0.12, 7, 7), petalMat);
         const angle = (p / 7) * Math.PI * 2;
         petal.scale.set(1, 0.45, 0.72);
-        petal.position.set(Math.cos(angle) * 0.09, 0.40, Math.sin(angle) * 0.09);
+        petal.position.set(Math.cos(angle) * 0.09, 0.90, Math.sin(angle) * 0.09);
         petal.rotation.y = angle;
         group.add(petal);
       }
@@ -364,11 +369,11 @@ void main() {
         const petal = new THREE.Mesh(new THREE.SphereGeometry(0.08, 6, 6), petalMat);
         const angle = (p / 5) * Math.PI * 2 + 0.3;
         petal.scale.set(1, 0.5, 0.7);
-        petal.position.set(Math.cos(angle) * 0.04, 0.47, Math.sin(angle) * 0.04);
+        petal.position.set(Math.cos(angle) * 0.04, 0.97, Math.sin(angle) * 0.04);
         group.add(petal);
       }
       const center = new THREE.Mesh(new THREE.SphereGeometry(0.08, 7, 7), centerMat);
-      center.position.y = 0.50;
+      center.position.y = 1.00;
       group.add(center);
       group.scale.setScalar(scale);
       return group;
@@ -407,6 +412,35 @@ void main() {
     // Each entry: [x, z, rotation_y, scale, growthFn]
     type PlantConfig = [number, number, number, number, (s: number) => any];
 
+    // Stage 5 — full garden; 14 full roses + 50 procedurally generated roses
+    const stage5Plants: PlantConfig[] = [
+      [0.9, 0.6, 0.4, 0.88, makeFullRose],
+      [-0.2, 1.1, 1.2, 0.84, makeFullRose],
+      [1.4, -0.3, 0.2, 0.82, makeFullRose],
+      [-1.5, 0.4, 3.6, 0.86, makeFullRose],
+      [0.3, -1.2, 1.8, 0.88, makeFullRose],
+      [-0.8, -0.9, 5.2, 0.82, makeFullRose],
+      [1.1, 1.2, 0.7, 0.80, makeFullRose],
+      [-1.2, 1.0, 4.0, 0.82, makeFullRose],
+      [0.0, 0.4, 2.0, 1.0, makeFullRose],
+      [1.6, 0.5, 0.1, 0.78, makeFullRose],
+      [-0.4, -0.3, 3.5, 0.84, makeFullRose],
+      [0.6, -0.6, 1.3, 0.80, makeFullRose],
+      [0.5, 1.4, 2.8, 0.78, makeFullRose],
+      [-1.6, -0.2, 5.8, 0.82, makeFullRose],
+    ];
+
+    for (let i = 0; i < 50; i++) {
+      const angle = (i * 0.13 + 0.1) * Math.PI * 2;
+      const radius = 0.4 + (Math.sin(i * 9.7) * 0.5 + 0.5) * 1.7; // between 0.4 and 2.1
+      const x = Math.cos(angle) * radius;
+      const z = Math.sin(angle) * radius;
+      const ry = i * 0.6;
+      const sc = 0.6 + (Math.sin(i * 13.3) * 0.5 + 0.5) * 0.35; // scale between 0.6 and 0.95
+      const fn = (i % 3 === 0) ? makeHalfRose : (i % 5 === 0 ? makeBud : makeFullRose);
+      stage5Plants.push([x, z, ry, sc, fn]);
+    }
+
     const gardenByStage: PlantConfig[][] = [
       // Stage 0 — bare island, no plants
       [],
@@ -437,23 +471,8 @@ void main() {
         [-0.3, 1.1, 3.3, 0.78, makeSproutWithLeaves],
         [1.2, 0.9, 1.4, 0.76, makeSproutWithLeaves],
       ],
-      // Stage 5 — full garden; 14 full roses
-      [
-        [0.9, 0.6, 0.4, 0.88, makeFullRose],
-        [-0.2, 1.1, 1.2, 0.84, makeFullRose],
-        [1.4, -0.3, 0.2, 0.82, makeFullRose],
-        [-1.5, 0.4, 3.6, 0.86, makeFullRose],
-        [0.3, -1.2, 1.8, 0.88, makeFullRose],
-        [-0.8, -0.9, 5.2, 0.82, makeFullRose],
-        [1.1, 1.2, 0.7, 0.80, makeFullRose],
-        [-1.2, 1.0, 4.0, 0.82, makeFullRose],
-        [0.0, 0.4, 2.0, 1.0, makeFullRose],
-        [1.6, 0.5, 0.1, 0.78, makeFullRose],
-        [-0.4, -0.3, 3.5, 0.84, makeFullRose],
-        [0.6, -0.6, 1.3, 0.80, makeFullRose],
-        [0.5, 1.4, 2.8, 0.78, makeFullRose],
-        [-1.6, -0.2, 5.8, 0.82, makeFullRose],
-      ],
+      // Stage 5 — full garden; 64 total roses
+      stage5Plants,
     ];
 
     // Build the garden plants for current stage — animate them in with stagger
@@ -497,6 +516,15 @@ void main() {
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
 
+    const isPopupRose = (object: any) => {
+      let current = object;
+      while (current) {
+        if (current.userData?.popupRose) return true;
+        current = current.parent;
+      }
+      return false;
+    };
+
     const easeOutBack = (t: number) => {
       const c1 = 1.70158, c3 = c1 + 1;
       return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
@@ -513,13 +541,18 @@ void main() {
     };
 
     const onPointerDown = (event: PointerEvent) => {
-      if (!journeyComplete || popPhase !== "idle") return;
+      if (!journeyComplete) return;
       const rect = renderer.domElement.getBoundingClientRect();
       if (!rect.width || !rect.height) return;
       pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
       raycaster.setFromCamera(pointer, camera);
-      if (raycaster.intersectObjects(islandGroup.children, true).length > 0) triggerRosePop();
+      const hit = raycaster.intersectObjects(islandGroup.children, true).find((intersection: any) => isPopupRose(intersection.object));
+      if (hit) {
+        triggerRosePop();
+        // Open the message popup via React state
+        setRosePopupOpen(true);
+      }
     };
     renderer.domElement.addEventListener("pointerdown", onPointerDown);
 
@@ -615,10 +648,10 @@ void main() {
     const petalCount = bloomStage >= 5
       ? (lite ? 12 : 22)
       : bloomStage >= 4
-      ? (lite ? 6 : 12)
-      : bloomStage >= 3
-      ? (lite ? 3 : 6)
-      : 0;
+        ? (lite ? 6 : 12)
+        : bloomStage >= 3
+          ? (lite ? 3 : 6)
+          : 0;
 
     const petals: HTMLDivElement[] = [];
     for (let i = 0; i < petalCount; i++) {
@@ -672,11 +705,10 @@ void main() {
 
       {/* Screen 1 — Mystery entry */}
       <main
-        className={`absolute inset-0 w-full h-full z-10 flex flex-col items-center justify-center safe-pad transition-all duration-[2000ms] ${
-          activeScreen === 1
+        className={`absolute inset-0 w-full h-full z-10 flex flex-col items-center justify-center safe-pad transition-all duration-[2000ms] ${activeScreen === 1
             ? "opacity-100 visible pointer-events-auto"
             : "opacity-0 invisible pointer-events-none"
-        }`}
+          }`}
       >
         <div className="flex-grow flex items-center justify-center text-center px-4">
           <h1 className="font-display-story text-[clamp(1.75rem,5vw,4rem)] text-inverse-surface fade-in-slow leading-tight max-w-4xl tracking-tight">
@@ -700,20 +732,18 @@ void main() {
       {/* Screen 2 — Floating Island hub */}
       <main
         id="fireflies-container"
-        className={`absolute inset-0 w-full h-full z-20 overflow-hidden transition-all duration-[2000ms] ${
-          activeScreen === 2
+        className={`absolute inset-0 w-full h-full z-20 overflow-hidden transition-all duration-[2000ms] ${activeScreen === 2
             ? "opacity-100 visible pointer-events-auto"
             : "opacity-0 invisible pointer-events-none"
-        }`}
+          }`}
       >
         {/* Island canvas */}
         <div className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none">
           <div className="relative w-[min(88vw,min(58vh,800px))] sm:w-[min(80vw,min(55vh,800px))] aspect-square max-w-full max-h-[min(70dvh,800px)]">
             <div
               ref={threeContainerRef}
-              className={`absolute inset-0 w-full h-full pointer-events-auto touch-manipulation transition-opacity duration-[3000ms] ${
-                activeScreen === 2 ? "opacity-100" : "opacity-0"
-              } ${journeyComplete ? "cursor-pointer" : ""}`}
+              className={`absolute inset-0 w-full h-full pointer-events-auto touch-manipulation transition-opacity duration-[3000ms] ${activeScreen === 2 ? "opacity-100" : "opacity-0"
+                } ${journeyComplete ? "cursor-pointer" : ""}`}
             />
           </div>
         </div>
@@ -732,7 +762,7 @@ void main() {
                   ✦ The island blooms — journey complete ✦
                 </p>
                 <p className="mt-1 font-body-md text-[12px] sm:text-[13px] text-on-surface-variant/80">
-                  Tap the island to watch a rose bloom
+                  Tap the island to reveal a message
                 </p>
               </>
             ) : (
@@ -743,17 +773,50 @@ void main() {
           </div>
         )}
 
+        {/* Garden-bloomed notification banner */}
+        {ready && journeyComplete && !gardenNotifDismissed && (
+          <div
+            className="absolute bottom-[max(5rem,calc(var(--safe-bottom)+4.5rem))] left-1/2 -translate-x-1/2 z-50 pointer-events-auto"
+            style={{ animation: "fadeInUp 0.8s cubic-bezier(0.22,1,0.36,1) both" }}
+          >
+            <div
+              className="flex items-center gap-3 rounded-2xl px-5 py-3.5 backdrop-blur-xl border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.6),inset_0_0_20px_rgba(233,195,73,0.08)]"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(20,12,36,0.92) 0%, rgba(30,18,50,0.92) 100%)",
+              }}
+            >
+              <span className="text-2xl select-none" aria-hidden>🌹</span>
+              <div className="flex flex-col">
+                <span className="font-label-caps text-[11px] uppercase tracking-widest text-tertiary/90">
+                  The Garden Has Bloomed
+                </span>
+                <span className="font-body-md text-[12px] text-on-surface-variant/80 mt-0.5">
+                  Click on the island to reveal a message
+                </span>
+              </div>
+              <button
+                type="button"
+                aria-label="Dismiss notification"
+                onClick={() => setGardenNotifDismissed(true)}
+                className="ml-2 text-on-surface-variant/50 hover:text-on-surface/80 transition-colors text-lg leading-none"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Garden progress dots — bottom centre above reset button */}
         {ready && (
           <div className="absolute bottom-[max(3.5rem,calc(var(--safe-bottom)+3rem))] left-1/2 -translate-x-1/2 z-40 pointer-events-none flex items-center gap-2">
             {[1, 2, 3, 4, 5].map((stage) => (
               <div
                 key={stage}
-                className={`rounded-full transition-all duration-700 ${
-                  bloomStage >= stage
+                className={`rounded-full transition-all duration-700 ${bloomStage >= stage
                     ? "w-2.5 h-2.5 bg-tertiary shadow-[0_0_8px_rgba(233,195,73,0.7)]"
                     : "w-1.5 h-1.5 bg-on-surface-variant/30"
-                }`}
+                  }`}
                 title={STAGE_HINTS[stage]}
               />
             ))}
@@ -762,6 +825,106 @@ void main() {
       </main>
 
       <ResetJourneyButton />
+
+      {/* ── Rose Message Popup ── */}
+      {rosePopupOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="A message for Kim"
+          onClick={(e) => { if (e.target === e.currentTarget) setRosePopupOpen(false); }}
+          style={{ animation: "fadeIn 0.6s ease both" }}
+        >
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, rgba(15,8,30,0.85) 0%, rgba(4,2,12,0.97) 100%)",
+              backdropFilter: "blur(18px)",
+              WebkitBackdropFilter: "blur(18px)",
+            }}
+          />
+
+          {/* Card */}
+          <div
+            className="relative z-10 w-full max-w-3xl mx-auto overflow-hidden rounded-[2rem] border border-white/12 shadow-[0_30px_90px_rgba(0,0,0,0.9),inset_0_0_0_1px_rgba(255,255,255,0.08)]"
+            style={{ animation: "scaleIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s both" }}
+          >
+            <div className="absolute inset-0">
+              <Image
+                src="/rose-popup-bg.png"
+                alt="Glowing rose petals background"
+                fill
+                sizes="(max-width: 768px) 100vw, 768px"
+                className="object-cover"
+                priority
+              />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,230,200,0.18)_0%,rgba(10,6,16,0.52)_45%,rgba(6,4,10,0.92)_100%)]" />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/35" />
+            </div>
+
+            <div className="relative z-10 px-4 py-5 sm:px-8 sm:py-8">
+              <div className="relative flex items-center justify-center gap-2 sm:gap-5">
+                <div className="relative h-[170px] w-[128px] sm:h-[265px] sm:w-[190px] shrink-0 -translate-x-2 sm:-translate-x-4 rotate-[-7deg] drop-shadow-[0_24px_40px_rgba(0,0,0,0.45)]">
+                  <Image
+                    src="/white-rose.png"
+                    alt="White rose"
+                    fill
+                    sizes="(max-width: 768px) 128px, 190px"
+                    className="object-contain object-center"
+                    priority
+                  />
+                </div>
+
+                <div className="relative max-w-[18rem] sm:max-w-[27rem] flex-1 rounded-[1.75rem] border border-white/18 bg-[rgba(14,10,18,0.46)] px-5 py-6 sm:px-8 sm:py-8 backdrop-blur-md shadow-[inset_0_0_40px_rgba(255,255,255,0.06)]">
+                  <p className="font-label-caps text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-white/55 text-center">
+                    A message for Kim
+                  </p>
+                  <p className="mt-3 font-display-story text-[clamp(1.45rem,4vw,2.35rem)] text-white text-center tracking-tight drop-shadow-[0_2px_16px_rgba(233,195,73,0.5)]">
+                    The garden opened for you.
+                  </p>
+                  <div className="mt-5 space-y-4 text-center font-body-lg text-white/84">
+                    <p style={{ fontSize: "clamp(0.86rem, 2vw, 1.02rem)" }}>
+                      You make the world more beautiful just by being in it — like a garden that blooms where you stand.
+                    </p>
+                    <p className="text-white/72" style={{ fontSize: "clamp(0.8rem, 1.9vw, 0.94rem)" }}>
+                      May every petal of this year unfold into something wonderful, and may every moment remind you that you are deeply loved.
+                    </p>
+                  </div>
+                  <div className="mt-6 flex items-center justify-center gap-3">
+                    <span className="h-px w-10 bg-white/18" />
+                    <span className="font-label-caps text-[10px] uppercase tracking-[0.3em] text-tertiary/85">With love</span>
+                    <span className="h-px w-10 bg-white/18" />
+                  </div>
+                </div>
+
+                <div className="relative h-[170px] w-[128px] sm:h-[265px] sm:w-[190px] shrink-0 translate-x-2 sm:translate-x-4 rotate-[7deg] drop-shadow-[0_24px_40px_rgba(0,0,0,0.45)]">
+                  <Image
+                    src="/white-rose.png"
+                    alt="White rose"
+                    fill
+                    sizes="(max-width: 768px) 128px, 190px"
+                    className="object-contain object-center scale-x-[-1]"
+                    priority
+                  />
+                </div>
+              </div>
+
+              <div className="mt-6 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setRosePopupOpen(false)}
+                  className="rounded-full border border-white/15 bg-white/6 px-7 py-2.5 font-label-caps text-[11px] tracking-[0.22em] uppercase text-white/80 transition-all duration-300 hover:border-white/35 hover:bg-white/10 hover:text-white"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
