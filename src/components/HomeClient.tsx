@@ -776,33 +776,35 @@ void main() {
         {/* Garden-bloomed notification banner */}
         {ready && journeyComplete && !gardenNotifDismissed && (
           <div
-            className="absolute bottom-[max(5rem,calc(var(--safe-bottom)+4.5rem))] left-1/2 -translate-x-1/2 z-50 pointer-events-auto"
+            className="absolute inset-x-0 bottom-[max(3.75rem,calc(var(--safe-bottom)+3rem))] z-50 flex justify-center px-3 pointer-events-auto"
             style={{ animation: "fadeInUp 0.8s cubic-bezier(0.22,1,0.36,1) both" }}
           >
             <div
-              className="flex items-center gap-3 rounded-2xl px-5 py-3.5 backdrop-blur-xl border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.6),inset_0_0_20px_rgba(233,195,73,0.08)]"
+              className="w-full max-w-[min(560px,92vw)] rounded-[2rem] px-5 py-5 sm:px-5 sm:py-6 backdrop-blur-xl border border-white/15 shadow-[0_14px_44px_rgba(0,0,0,0.66),inset_0_0_24px_rgba(233,195,73,0.08)]"
               style={{
                 background:
-                  "linear-gradient(135deg, rgba(20,12,36,0.92) 0%, rgba(30,18,50,0.92) 100%)",
+                  "linear-gradient(135deg, rgba(20,12,36,0.96) 0%, rgba(30,18,50,0.94) 100%)",
               }}
             >
-              <span className="text-2xl select-none" aria-hidden>🌹</span>
-              <div className="flex flex-col">
-                <span className="font-label-caps text-[11px] uppercase tracking-widest text-tertiary/90">
+              <div className="flex flex-col items-center text-center">
+                <span className="font-label-caps text-[11px] sm:text-[12px] uppercase tracking-[0.24em] text-tertiary/90">
                   The Garden Has Bloomed
                 </span>
-                <span className="font-body-md text-[12px] text-on-surface-variant/80 mt-0.5">
-                  Click on the island to reveal a message
+                <span className="mt-2 font-display-story text-[clamp(1.35rem,4vw,2.1rem)] text-white tracking-tight drop-shadow-[0_2px_14px_rgba(233,195,73,0.35)]">
+                  Click the island to reveal a message
                 </span>
+                <p className="mt-3 max-w-2xl font-body-md text-[13px] sm:text-[15px] text-on-surface-variant/82 leading-relaxed">
+                  The island is ready now. Tap the garden, and the message will open in a larger bloom-style popup.
+                </p>
+                <button
+                  type="button"
+                  aria-label="Dismiss notification"
+                  onClick={() => setGardenNotifDismissed(true)}
+                  className="mt-6 min-h-[44px] rounded-full border border-white/15 bg-white/6 px-8 py-2.5 font-label-caps text-[11px] tracking-[0.22em] uppercase text-white/80 transition-all duration-300 hover:border-white/35 hover:bg-white/10 hover:text-white"
+                >
+                  Close
+                </button>
               </div>
-              <button
-                type="button"
-                aria-label="Dismiss notification"
-                onClick={() => setGardenNotifDismissed(true)}
-                className="ml-2 text-on-surface-variant/50 hover:text-on-surface/80 transition-colors text-lg leading-none"
-              >
-                ×
-              </button>
             </div>
           </div>
         )}
@@ -829,7 +831,7 @@ void main() {
       {/* ── Rose Message Popup ── */}
       {rosePopupOpen && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+          className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center px-3 py-4 sm:p-6"
           role="dialog"
           aria-modal="true"
           aria-label="A message for Kim"
@@ -849,7 +851,7 @@ void main() {
 
           {/* Card */}
           <div
-            className="relative z-10 w-full max-w-3xl mx-auto overflow-hidden rounded-[2rem] border border-white/12 shadow-[0_30px_90px_rgba(0,0,0,0.9),inset_0_0_0_1px_rgba(255,255,255,0.08)]"
+            className="relative z-10 w-full max-w-[min(1040px,96vw)] overflow-hidden rounded-[2rem] border border-white/12 shadow-[0_30px_90px_rgba(0,0,0,0.9),inset_0_0_0_1px_rgba(255,255,255,0.08)]"
             style={{ animation: "scaleIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s both" }}
           >
             <div className="absolute inset-0">
@@ -865,61 +867,62 @@ void main() {
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/35" />
             </div>
 
-            <div className="relative z-10 px-4 py-5 sm:px-8 sm:py-8">
-              <div className="relative flex items-center justify-center gap-2 sm:gap-5">
-                <div className="relative h-[170px] w-[128px] sm:h-[265px] sm:w-[190px] shrink-0 -translate-x-2 sm:-translate-x-4 rotate-[-7deg] drop-shadow-[0_24px_40px_rgba(0,0,0,0.45)]">
+            <div className="relative z-10 px-3 py-4 sm:px-8 sm:py-8">
+              <div className="glass-panel relative overflow-hidden rounded-[1.75rem] border border-white/12 bg-[rgba(14,10,18,0.38)] shadow-[inset_0_0_40px_rgba(255,255,255,0.05)]">
+                <div className="absolute inset-0">
                   <Image
                     src="/white-rose.png"
-                    alt="White rose"
+                    alt="White rose background"
                     fill
-                    sizes="(max-width: 768px) 128px, 190px"
-                    className="object-contain object-center"
+                    sizes="(max-width: 768px) 100vw, 960px"
+                    className="object-cover object-center opacity-35 scale-110"
                     priority
                   />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,248,238,0.45)_0%,rgba(255,238,221,0.26)_22%,rgba(18,12,24,0.40)_58%,rgba(8,5,12,0.86)_100%)]" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-white/5 via-transparent to-black/45" />
                 </div>
 
-                <div className="relative max-w-[18rem] sm:max-w-[27rem] flex-1 rounded-[1.75rem] border border-white/18 bg-[rgba(14,10,18,0.46)] px-5 py-6 sm:px-8 sm:py-8 backdrop-blur-md shadow-[inset_0_0_40px_rgba(255,255,255,0.06)]">
-                  <p className="font-label-caps text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-white/55 text-center">
-                    A message for Kim
-                  </p>
-                  <p className="mt-3 font-display-story text-[clamp(1.45rem,4vw,2.35rem)] text-white text-center tracking-tight drop-shadow-[0_2px_16px_rgba(233,195,73,0.5)]">
-                    The garden opened for you.
-                  </p>
-                  <div className="mt-5 space-y-4 text-center font-body-lg text-white/84">
-                    <p style={{ fontSize: "clamp(0.86rem, 2vw, 1.02rem)" }}>
-                      You make the world more beautiful just by being in it — like a garden that blooms where you stand.
-                    </p>
-                    <p className="text-white/72" style={{ fontSize: "clamp(0.8rem, 1.9vw, 0.94rem)" }}>
-                      May every petal of this year unfold into something wonderful, and may every moment remind you that you are deeply loved.
-                    </p>
+                <div className="relative z-10 flex min-h-[clamp(420px,72vh,720px)] flex-col px-5 py-6 sm:px-8 sm:py-8">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="font-label-caps text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-white/70">
+                        A message for Kim
+                      </p>
+                      <p className="mt-2 font-display-story text-[clamp(1.8rem,5vw,3.25rem)] text-white tracking-tight drop-shadow-[0_2px_18px_rgba(233,195,73,0.52)]">
+                        The garden opened for you.
+                      </p>
+                    </div>
+                    <span className="hidden sm:inline-flex rounded-full border border-white/12 bg-white/10 px-4 py-2 font-label-caps text-[10px] uppercase tracking-[0.3em] text-tertiary/90 backdrop-blur-md">
+                      Blooming
+                    </span>
                   </div>
-                  <div className="mt-6 flex items-center justify-center gap-3">
-                    <span className="h-px w-10 bg-white/18" />
-                    <span className="font-label-caps text-[10px] uppercase tracking-[0.3em] text-tertiary/85">With love</span>
-                    <span className="h-px w-10 bg-white/18" />
+
+                  <div className="mt-6 flex flex-1 items-center">
+                    <div className="w-full space-y-5 rounded-[1.5rem] border border-white/10 bg-[rgba(18,14,24,0.34)] px-5 py-6 sm:px-7 sm:py-8 backdrop-blur-2xl shadow-[inset_0_0_34px_rgba(255,255,255,0.05)]">
+                      <p className="mx-auto max-w-3xl text-center font-body-lg text-white/88" style={{ fontSize: "clamp(0.95rem, 2vw, 1.15rem)" }}>
+                        You asked me for a white rose, and I couldn't bring you one in person. So I grew one the only way I could, one made of time, patience, and a thousand little thoughts of you. 
+                      </p>
+                      <p className="mx-auto max-w-3xl text-center font-body-lg text-white/74" style={{ fontSize: "clamp(0.85rem, 1.8vw, 1rem)" }}>
+                        It may not have a fragrance, but every petal carries a piece of my heart.
+                      </p>
+                      <div className="flex items-center justify-center gap-3 pt-2">
+                        <span className="h-px w-12 bg-white/18" />
+                        <span className="font-label-caps text-[10px] uppercase tracking-[0.3em] text-tertiary/90">With love from your lovely idiot</span>
+                        <span className="h-px w-12 bg-white/18" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 flex justify-center">
+                    <button
+                      type="button"
+                      onClick={() => setRosePopupOpen(false)}
+                      className="min-h-[44px] rounded-full border border-white/15 bg-white/6 px-8 py-2.5 font-label-caps text-[11px] tracking-[0.22em] uppercase text-white/80 transition-all duration-300 hover:border-white/35 hover:bg-white/10 hover:text-white"
+                    >
+                      Close
+                    </button>
                   </div>
                 </div>
-
-                <div className="relative h-[170px] w-[128px] sm:h-[265px] sm:w-[190px] shrink-0 translate-x-2 sm:translate-x-4 rotate-[7deg] drop-shadow-[0_24px_40px_rgba(0,0,0,0.45)]">
-                  <Image
-                    src="/white-rose.png"
-                    alt="White rose"
-                    fill
-                    sizes="(max-width: 768px) 128px, 190px"
-                    className="object-contain object-center scale-x-[-1]"
-                    priority
-                  />
-                </div>
-              </div>
-
-              <div className="mt-6 flex justify-center">
-                <button
-                  type="button"
-                  onClick={() => setRosePopupOpen(false)}
-                  className="rounded-full border border-white/15 bg-white/6 px-7 py-2.5 font-label-caps text-[11px] tracking-[0.22em] uppercase text-white/80 transition-all duration-300 hover:border-white/35 hover:bg-white/10 hover:text-white"
-                >
-                  Close
-                </button>
               </div>
             </div>
           </div>
