@@ -186,9 +186,9 @@ export default function ObservatoryClient() {
               const isHovered = hoveredConstellation === c.name;
 
               // Support user-defined connections, fallback to consecutive connection
-              const connections = "connections" in c
+              const connections: readonly (readonly [number, number])[] = "connections" in c
                 ? (c.connections as readonly (readonly [number, number])[])
-                : c.stars.slice(0, -1).map((_, idx) => [idx, idx + 1] as const);
+                : (c as any).stars.slice(0, -1).map((_: any, idx: number) => [idx, idx + 1] as const);
 
               return (
                 <g key={`lines-${c.name}`}>
