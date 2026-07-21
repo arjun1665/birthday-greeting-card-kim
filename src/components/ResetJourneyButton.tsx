@@ -21,6 +21,8 @@ export function ResetJourneyButton() {
   return (
     <button
       type="button"
+      disabled
+      style={{ display: "none" }}
       onClick={handleReset}
       className="fixed bottom-[max(1rem,var(--safe-bottom))] left-[max(1rem,var(--safe-left))] z-[100] flex items-center gap-1.5 rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-[10px] font-label-caps uppercase tracking-widest text-on-surface-variant/70 backdrop-blur-md transition-colors hover:border-tertiary/40 hover:text-tertiary"
       title="Clear saved progress (testing)"
